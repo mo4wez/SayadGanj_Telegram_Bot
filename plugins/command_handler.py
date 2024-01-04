@@ -1,6 +1,6 @@
 from pyrogram import Client, filters
 from pyrogram.types import Message
-from constants.join_checker_filter import is_user_joined
+from filters.join_checker_filter import is_user_joined
 from models.users import User
 from constants.bot_messages import WELCOME_MESSAGE, INLINE_SEARCH_BODY
 from constants.keyboards import INLINE_SEARCH_BUTTON
