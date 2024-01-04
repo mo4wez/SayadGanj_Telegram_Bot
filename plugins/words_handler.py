@@ -3,9 +3,10 @@ from pyrogram import Client, filters
 from pyrogram.types import Message, CallbackQuery
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 from pyrogram.types import InlineQuery, InlineQueryResultArticle, InputTextMessageContent
-from constants.join_checker_filter import is_joined_filter
+from filters.join_checker_filter import is_joined_filter, is_user_joined
 from models.words import WordBook
 from peewee import DoesNotExist
+from constants.bot_messages import PLEASE_CHOOSE_ONE
 
 @Client.on_message(filters.text & is_joined_filter)
 async def search_word_handler(client: Client, message: Message):
@@ -33,7 +34,7 @@ async def search_word_handler(client: Client, message: Message):
             reply_markup = InlineKeyboardMarkup(buttons)
             await client.send_message(
                 chat_id=message.chat.id,
-                text="Please choose one:",
+                text=PLEASE_CHOOSE_ONE,
                 reply_markup=reply_markup
             )
 
@@ -42,6 +43,8 @@ active_buttons = {}
 @Client.on_callback_query()
 async def callback_handler(client: Client, query: CallbackQuery):
     chat_id = query.message.chat.id
+    if not await is_user_joined(None, client, query.message):
+        return
     if query.data.startswith("result_"):
         result_id = int(query.data.split("_")[1])
         try:
@@ -73,7 +76,7 @@ async def callback_handler(client: Client, query: CallbackQuery):
 @Client.on_inline_query()
 async def inline_query_handler(client: Client, inline_query: InlineQuery):
     results = await search_word(inline_query.query)
-    
+
     inline_results = []
     for result in results:
         cleaned_entry = remove_h_tags(result.entry.split(':')[1])
