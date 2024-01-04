@@ -1,3 +1,4 @@
+import re
 from pyrogram import Client, filters
 from pyrogram.types import Message, CallbackQuery
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup
@@ -5,8 +6,6 @@ from pyrogram.types import InlineQuery, InlineQueryResultArticle, InputTextMessa
 from constants.join_checker_filter import is_joined_filter
 from models.words import WordBook
 from peewee import DoesNotExist
-import logging
-import re
 
 @Client.on_message(filters.text & is_joined_filter)
 async def search_word_handler(client: Client, message: Message):
@@ -16,7 +15,6 @@ async def search_word_handler(client: Client, message: Message):
         if len(results) < 1:
             await message.reply_text("No results found.")
         elif len(results) == 1:
-            # Display the only result
             cleaned_translation = remove_h_tags(results[0].entry)
             await message.reply_text(cleaned_translation)
         else:
@@ -47,7 +45,6 @@ async def callback_handler(client: Client, query: CallbackQuery):
     if query.data.startswith("result_"):
         result_id = int(query.data.split("_")[1])
         try:
-            # Fetch the specific result based on the ID (you'll need to implement this logic)
             selected_result = WordBook.select().where(
                 WordBook._id == result_id,
             ).get()
@@ -65,8 +62,6 @@ async def callback_handler(client: Client, query: CallbackQuery):
                     if int(button.callback_data.split("_")[1]) not in active_buttons.get(chat_id, []):
                         new_row.append(button)
                         new_buttons.append(new_row)
-            
-            # Edit the message with the updated inline keyboard
             await query.edit_message_reply_markup(InlineKeyboardMarkup(new_buttons))
         except DoesNotExist:
             await query.answer('No results found.')
@@ -77,12 +72,11 @@ async def callback_handler(client: Client, query: CallbackQuery):
 # Inline query handler
 @Client.on_inline_query()
 async def inline_query_handler(client: Client, inline_query: InlineQuery):
-    results = await search_word(inline_query.query)  # Perform your search based on the query
+    results = await search_word(inline_query.query)
     
     inline_results = []
     for result in results:
-        # Create InlineQueryResultArticle for each result
-        cleaned_entry = remove_h_tags(result.entry.split(':')[1])  # Adjust as needed
+        cleaned_entry = remove_h_tags(result.entry.split(':')[1])
         input_content = InputTextMessageContent(cleaned_entry)
         inline_result = InlineQueryResultArticle(
             id=str(result._id),
