@@ -1,5 +1,15 @@
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 from constants.bot_messages import SUB_CHANNEL_NAME, SUB_CHANNEL_LINK, INLINE_SEARCH_TITLE
+from constants.bot_messages import (
+    BOT_USERS,
+    SEND_PUBLIC_MESSAGE,
+    SEND_PRIVATE_MESSAGE,
+    BOT_USERS_CD,
+    PUBLIC_MESSAGE,
+    PRIVATE_MESSAGE,
+    USER_MODE,
+    USER_MODE_CD
+    )
 
 JOIN_TO_CHANNEL_KEYBOARD = InlineKeyboardMarkup(
     [
@@ -16,9 +26,9 @@ INLINE_SEARCH_BUTTON = InlineKeyboardMarkup(
 
 ADMIN_OPTIONS = InlineKeyboardMarkup(
     [
-        [InlineKeyboardButton('Users', callback_data='bot_users')],
-        [InlineKeyboardButton('Send public message', callback_data='public_message')],
-        [InlineKeyboardButton('Send private message', callback_data='private_message')],
-        
+        [InlineKeyboardButton(BOT_USERS, callback_data=BOT_USERS_CD)],
+        [InlineKeyboardButton(SEND_PUBLIC_MESSAGE, callback_data=PUBLIC_MESSAGE)],
+        [InlineKeyboardButton(SEND_PRIVATE_MESSAGE, callback_data=PRIVATE_MESSAGE)],
+        [InlineKeyboardButton(USER_MODE, callback_data=USER_MODE_CD)],
     ]
 )

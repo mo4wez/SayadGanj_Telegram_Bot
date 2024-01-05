@@ -27,4 +27,24 @@ INLINE_SEARCH_BODY = '''
 ✅
 '''
 
-WELCOME_ADMIN = 'وش اتکه ادمین'
+# Admin messages
+WELCOME_ADMIN = 'Hi Admin, here you can do with buttons.'
+BOT_USERS = 'Users'
+SEND_PUBLIC_MESSAGE = 'Send public message'
+SEND_PRIVATE_MESSAGE = 'Send private message'
+PUBLIC_MESSAGE_SENT = '✅ Message sent to users.'
+PRIVATE_MESSAGE_SENT = '✅ Message sent to user.'
+USER_MODE = 'User mode'
+USER_MODE_ACTIVATED = 'User mode activated.'
+TOTAL_USERS = 'Total users: {}'
+
+# ask messages
+SEND_YOUR_MESSAGE = 'Send your message:'
+SEND_USER_ID = 'Send user id:'
+NOW_SEND_YOUR_MESSAGE = 'Now Send your message:'
+
+# admin callback data text
+BOT_USERS_CD = 'bot_users'
+PUBLIC_MESSAGE = 'public_message'
+PRIVATE_MESSAGE = 'private_message'
+USER_MODE_CD = 'user_mode'
