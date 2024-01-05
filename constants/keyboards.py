@@ -7,8 +7,6 @@ from constants.bot_messages import (
     BOT_USERS_CD,
     PUBLIC_MESSAGE,
     PRIVATE_MESSAGE,
-    USER_MODE,
-    USER_MODE_CD
     )
 
 JOIN_TO_CHANNEL_KEYBOARD = InlineKeyboardMarkup(
@@ -29,6 +27,5 @@ ADMIN_OPTIONS = InlineKeyboardMarkup(
         [InlineKeyboardButton(BOT_USERS, callback_data=BOT_USERS_CD)],
         [InlineKeyboardButton(SEND_PUBLIC_MESSAGE, callback_data=PUBLIC_MESSAGE)],
         [InlineKeyboardButton(SEND_PRIVATE_MESSAGE, callback_data=PRIVATE_MESSAGE)],
-        [InlineKeyboardButton(USER_MODE, callback_data=USER_MODE_CD)],
     ]
 )

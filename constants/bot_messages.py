@@ -34,8 +34,6 @@ SEND_PUBLIC_MESSAGE = 'Send public message'
 SEND_PRIVATE_MESSAGE = 'Send private message'
 PUBLIC_MESSAGE_SENT = '✅ Message sent to users.'
 PRIVATE_MESSAGE_SENT = '✅ Message sent to user.'
-USER_MODE = 'User mode'
-USER_MODE_ACTIVATED = 'User mode activated.'
 TOTAL_USERS = 'Total users: {}'
 
 # ask messages
@@ -47,4 +45,3 @@ NOW_SEND_YOUR_MESSAGE = 'Now Send your message:'
 BOT_USERS_CD = 'bot_users'
 PUBLIC_MESSAGE = 'public_message'
 PRIVATE_MESSAGE = 'private_message'
-USER_MODE_CD = 'user_mode'

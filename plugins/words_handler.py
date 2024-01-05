@@ -42,8 +42,9 @@ active_buttons = {}
 
 @Client.on_callback_query()
 async def callback_handler(client: Client, query: CallbackQuery):
-    chat_id = query.message.chat.id
-    if not await is_user_joined(None, client, query.message):
+    message = query.message if query.message else await query.message.reply_text("Message not found.")
+    chat_id = message.chat.id
+    if not await is_user_joined(None, client, message):
         return
     if query.data.startswith("result_"):
         result_id = int(query.data.split("_")[1])
