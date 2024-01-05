@@ -8,7 +8,7 @@ from exceptions import InvalidJsonConfigFileException
 class SayadGanjBotConfig:
     def __init__(self):
         try:
-            self.token, self.api_id, self.api_hash, self.admin_id = self._read_env_config()
+            self.token, self.api_hash, self.api_id, self.admin_id = self._read_env_config()
         except InvalidJsonConfigFileException:
             exit(2)
 
@@ -18,8 +18,8 @@ class SayadGanjBotConfig:
         load_dotenv(dotenv_path=str(env_path))
 
         token = os.getenv("TOKEN")
-        api_id = os.getenv("API_ID")
         api_hash = os.getenv("API_HASH")
+        api_id = os.getenv("API_ID")
         admin_id = os.getenv("ADMIN_ID")
         
         return token, api_hash, api_id, admin_id
