@@ -53,6 +53,7 @@ async def callback_handler(client: Client, query: CallbackQuery):
             ).get()
 
             await query.edit_message_text(selected_result.entry)
+
             # Remove the selected button
             if chat_id in active_buttons and result_id in active_buttons[chat_id]:
                 active_buttons[chat_id].remove(result_id)
