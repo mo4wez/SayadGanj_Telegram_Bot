@@ -1,6 +1,6 @@
 from pyrogram import Client
-from environs import Env
 from bot_config import SayadGanjBotConfig
+import pyromod
 import logging
 
 # configure plugins

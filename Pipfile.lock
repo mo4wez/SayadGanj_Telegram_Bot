@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "4bcd76c311a4b574c740c42f231ed7df018e42070a241c9654b11f5ef98caa2c"
+            "sha256": "e59aba517811894a8662dbf199293eec5b08ba77763ca58c3fc9e6bb65c235ef"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -62,6 +62,14 @@
             "index": "pypi",
             "markers": "python_version ~= '3.7'",
             "version": "==2.0.106"
+        },
+        "pyromod": {
+            "hashes": [
+                "sha256:e49bb65c1f77c1505b20aa463caa82546f6b3a01e6194a1b2d6f74de2005b197"
+            ],
+            "index": "pypi",
+            "markers": "python_version >= '3.8'",
+            "version": "==3.1.6"
         },
         "pysocks": {
             "hashes": [
