@@ -1,17 +1,17 @@
 from pyrogram import Client
 from environs import Env
+from bot_config import SayadGanjBotConfig
 import logging
 
 # configure plugins
 plugins = dict(root="plugins")
 
 # read .env file
-env = Env()
-env.read_env()
+config = SayadGanjBotConfig()
 
-api_id = env("API_ID")
-api_hash = env("API_HASH")
-token = env("TOKEN")
+api_id = config.api_id
+api_hash = config.api_hash
+token = config.token
 
 # Client instance
 bot = Client(

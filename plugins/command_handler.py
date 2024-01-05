@@ -38,3 +38,15 @@ async def search(client: Client, message: Message):
         text=INLINE_SEARCH_BODY,
         reply_markup=INLINE_SEARCH_BUTTON
     )
+
+@Client.on_message(filters.command('help'))
+async def help(client: Client, message: Message):
+    chat_id = message.chat.id
+    
+    if not await is_user_joined(None, client, message):
+        return
+    
+    await client.send_message(
+        chat_id=chat_id,
+        text='Help command.',
+    )
