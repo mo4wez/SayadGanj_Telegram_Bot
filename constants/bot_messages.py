@@ -26,3 +26,5 @@ INLINE_SEARCH_BODY = '''
 
 ✅
 '''
+
+WELCOME_ADMIN = 'وش اتکه ادمین'

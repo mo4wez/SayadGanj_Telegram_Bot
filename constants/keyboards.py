@@ -13,3 +13,12 @@ INLINE_SEARCH_BUTTON = InlineKeyboardMarkup(
         [InlineKeyboardButton(INLINE_SEARCH_TITLE, switch_inline_query_current_chat="")]
     ]
     )
+
+ADMIN_OPTIONS = InlineKeyboardMarkup(
+    [
+        [InlineKeyboardButton('Users', callback_data='bot_users')],
+        [InlineKeyboardButton('Send public message', callback_data='public_message')],
+        [InlineKeyboardButton('Send private message', callback_data='private_message')],
+        
+    ]
+)
