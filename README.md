@@ -9,7 +9,7 @@ This is a Telegram bot developed using Pyrogram and SQLite to provide a Balochi 
 - **Pyrogram Framework:** Built on the Pyrogram framework for easy integration with Telegram's Bot API.
 
 ## SayadGanj Bot
-![sayadganj](![sayad-01](https://github.com/mo4wez/SayadGanj_Telegram_Bot/assets/44638454/bfed4aa7-80a0-4c66-b7a4-ed0e176b9ef3))
+![sayadganj]((https://github.com/mo4wez/SayadGanj_Telegram_Bot/assets/44638454/bfed4aa7-80a0-4c66-b7a4-ed0e176b9ef3))
 
 ## Requirements
 
