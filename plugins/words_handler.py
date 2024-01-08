@@ -44,9 +44,10 @@ async def search_word_handler(client: Client, message: Message):
 
 active_buttons = {}
 
-@Client.on_callback_query()
+@Client.on_callback_query(group=1)
 async def callback_handler(client: Client, query: CallbackQuery):
-    message = query.message if query.message else await query.message.reply_text("Message not found.")
+    print('in callback handler')
+    message = query.message
     chat_id = message.chat.id
     if not await is_user_joined(None, client, message):
         return
@@ -54,9 +55,7 @@ async def callback_handler(client: Client, query: CallbackQuery):
         result_id = int(query.data.split("_")[1])
         try:
             selected_result = WordBook.select().where(
-                WordBook._id == result_id,
-            ).get()
-
+                WordBook._id == result_id,).get()
             await query.edit_message_text(selected_result.entry)
 
             # Remove the selected button
@@ -74,7 +73,7 @@ async def callback_handler(client: Client, query: CallbackQuery):
             await query.edit_message_reply_markup(InlineKeyboardMarkup(new_buttons))
         except DoesNotExist:
             await query.answer('No results found.')
-        except Exception as e:
+        except Exception:
             await query.answer('An error occurred.')
 
 
@@ -102,7 +101,7 @@ async def search_word(word_to_trans):
             WordBook.langFullWord == word_to_trans
             )
         return results
-    except DoesNotExist as e:
+    except DoesNotExist:
         pass
     
 def remove_h_tags(word):

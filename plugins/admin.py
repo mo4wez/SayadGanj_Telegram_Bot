@@ -67,4 +67,5 @@ async def send_message_to_specific_user(client: Client):
         msg = msg_input.text.strip()  # Trim leading/trailing spaces
 
         await client.send_message(chat_id=user_id, text=msg)
-        break 
+        break
+
