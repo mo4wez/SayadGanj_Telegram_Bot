@@ -1,6 +1,5 @@
-import pyromod
 from pyrogram import Client, filters
-from pyrogram.types import Message, CallbackQuery, InlineKeyboardButton, InlineKeyboardMarkup
+from pyrogram.types import Message, CallbackQuery
 from main import config
 from constants.keyboards import ADMIN_OPTIONS
 from models.users import User
@@ -53,7 +52,7 @@ async def send_message_to_all_users(client: Client):
 async def send_message_to_specific_user(client: Client):
     while True:
         user_id_input = await client.ask(chat_id=admin_id, text=SEND_USER_ID)
-        user_id = user_id_input.text.strip()  # Trim leading/trailing spaces
+        user_id = user_id_input.text.strip()
 
         if not user_id.isdigit():
             await client.send_message(chat_id=admin_id, text="Please enter a user ID containing only digits. Try again.")
