@@ -15,7 +15,7 @@ This is a Telegram bot developed using Pyrogram and SQLite to provide a Balochi 
 
 - Python 3.9 or higher
 - Pipenv
-- Pyrogram library
+- Pyrogram
 - peewee
 
 ## Installation
