@@ -5,7 +5,11 @@ from models.users import User
 from constants.bot_messages import WELCOME_MESSAGE, INLINE_SEARCH_BODY
 from constants.keyboards import INLINE_SEARCH_BUTTON
 
-@Client.on_message(filters.command('start'))
+from main import config
+
+admin_id = int(config.admin_id)
+
+@Client.on_message(filters.command('start') & filters.user(admin_id))
 async def start(client: Client, message: Message):
     chat_id = message.chat.id
     first_name = message.from_user.first_name
@@ -27,7 +31,7 @@ async def start(client: Client, message: Message):
         )
     await message.reply_text(WELCOME_MESSAGE)
 
-@Client.on_message(filters.command('search'))
+@Client.on_message(filters.command('search') & filters.user(admin_id))
 async def search(client: Client, message: Message):
     chat_id = message.chat.id
     if not await is_user_joined(None, client, message):
@@ -39,7 +43,7 @@ async def search(client: Client, message: Message):
         reply_markup=INLINE_SEARCH_BUTTON
     )
 
-@Client.on_message(filters.command('help'))
+@Client.on_message(filters.command('help') & filters.user(admin_id))
 async def help(client: Client, message: Message):
     chat_id = message.chat.id
     

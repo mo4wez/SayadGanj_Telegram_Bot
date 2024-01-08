@@ -8,7 +8,11 @@ from models.words import WordBook
 from peewee import DoesNotExist
 from constants.bot_messages import PLEASE_CHOOSE_ONE
 
-@Client.on_message(filters.text & is_joined_filter)
+from main import config
+
+admin_id = int(config.admin_id)
+
+@Client.on_message((filters.text & is_joined_filter) & filters.user(admin_id))
 async def search_word_handler(client: Client, message: Message):
     balochi_word = message.text
     results = await search_word(balochi_word)
