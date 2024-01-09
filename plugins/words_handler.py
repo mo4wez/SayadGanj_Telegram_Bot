@@ -94,6 +94,7 @@ async def inline_query_handler(client: Client, inline_query: InlineQuery):
         inline_results.append(inline_result)
     
     await inline_query.answer(inline_results)
+
     
 async def search_word(word_to_trans):
     try:
