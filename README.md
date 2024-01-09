@@ -56,11 +56,14 @@ This is a Telegram bot developed using Pyrogram and SQLite to provide a Balochi 
     TOKEN=YOUR_BOT_TOKEN
     ADMIN_ID=YOUR_CHAT_ID
     ```
+6. **Main Database:**
 
-6. **Run the bot using Pipenv:**
+   You will need a database named wordbook.db for searching words.
+   
+7. **Run the bot using Pipenv:**
 
     ```
-    pipenv run python bot.py
+    pipenv run python main.py
     ```
 
 ## Usage
