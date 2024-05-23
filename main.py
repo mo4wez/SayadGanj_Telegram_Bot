@@ -2,6 +2,7 @@ from pyrogram import Client
 from bot_config import SayadGanjBotConfig
 import pyromod
 import logging
+import configparser
 
 # configure plugins
 plugins = dict(root="plugins")
@@ -13,6 +14,16 @@ api_id = config.api_id
 api_hash = config.api_hash
 token = config.token
 
+# read proxy file
+proxy_config = configparser.ConfigParser()
+proxy_config.read('proxy.ini')
+
+proxy = {
+    "scheme": proxy_config.get('proxy', 'scheme'),
+    "hostname": proxy_config.get('proxy', 'hostname'),
+    "port": proxy_config.getint('proxy', 'port'),
+}
+
 # Client instance
 bot = Client(
     name="sayad_ganj",
@@ -20,6 +31,7 @@ bot = Client(
     api_hash=api_hash,
     bot_token=token,
     plugins=plugins,
+    proxy=proxy
 )
 
 if __name__ == '__main__':
