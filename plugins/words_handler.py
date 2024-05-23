@@ -3,7 +3,7 @@ from pyrogram import Client, filters
 from pyrogram.types import Message, CallbackQuery
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 from pyrogram.types import InlineQuery, InlineQueryResultArticle, InputTextMessageContent
-from filters.join_checker_filter import is_joined_filter, is_user_joined
+from filters.join_checker_filter import is_user_joined
 from models.words import WordBook
 from peewee import DoesNotExist
 from constants.bot_messages import PLEASE_CHOOSE_ONE
@@ -12,8 +12,11 @@ from main import config
 
 admin_id = int(config.admin_id)
 
-@Client.on_message((filters.text & is_joined_filter) & filters.user(admin_id))
+@Client.on_message((filters.text))
 async def search_word_handler(client: Client, message: Message):
+    if not await is_user_joined(None, client, message):
+        return
+
     balochi_word = message.text
     results = await search_word(balochi_word)
     if results:
@@ -46,11 +49,12 @@ active_buttons = {}
 
 @Client.on_callback_query(group=1)
 async def callback_handler(client: Client, query: CallbackQuery):
-    print('in callback handler')
     message = query.message
     chat_id = message.chat.id
+
     if not await is_user_joined(None, client, message):
         return
+    
     if query.data.startswith("result_"):
         result_id = int(query.data.split("_")[1])
         try:
@@ -100,10 +104,10 @@ async def search_word(word_to_trans):
     try:
         results = WordBook.select().where(
             WordBook.langFullWord == word_to_trans
-            )
+        )
         return results
     except DoesNotExist:
-        pass
+        print('Not found.')
     
 def remove_h_tags(word):
     new_word = re.sub(r'<h1>.*?</h1>', '', word)

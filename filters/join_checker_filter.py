@@ -7,12 +7,15 @@ async def is_user_joined(_, client: Client, message: Message):
     chat_id = message.chat.id
     try:
         user = await client.get_chat_member(
-            chat_id="sayadganjjointest",
-            user_id=message.chat.id,
+            chat_id="balochbit",
+            user_id=chat_id,
         )
-        if (not user.status == "left" or user.status == "kicked"):
+        if user.status == "left" or user.status == "kicked":
+            return False
+        else:
             return True
-    except Exception:
+    except Exception as e:
+        print('error:', e)
         await client.send_message(
             chat_id=chat_id,
             text=PLEASE_JOIN_TO_CHANNEL,
