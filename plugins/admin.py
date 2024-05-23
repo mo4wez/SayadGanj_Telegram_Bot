@@ -38,6 +38,9 @@ async def admin_callback_handler(client: Client, query: CallbackQuery):
     elif data == PRIVATE_MESSAGE:
         await send_message_to_specific_user(client)
         await query.answer(PRIVATE_MESSAGE_SENT, show_alert=True)
+    elif data == 'cancel':
+        await query.answer('exited from admin panel.')
+        return
 
 async def send_message_to_all_users(client: Client):
     users = User.select()
@@ -67,5 +70,6 @@ async def send_message_to_specific_user(client: Client):
         msg = msg_input.text.strip()  # Trim leading/trailing spaces
 
         await client.send_message(chat_id=user_id, text=msg)
+        await client.send_message(chat_id=admin_id, text='Message sent to user.')
         break
 
