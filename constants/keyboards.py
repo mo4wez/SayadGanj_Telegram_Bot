@@ -27,5 +27,6 @@ ADMIN_OPTIONS = InlineKeyboardMarkup(
         [InlineKeyboardButton(BOT_USERS, callback_data=BOT_USERS_CD)],
         [InlineKeyboardButton(SEND_PUBLIC_MESSAGE, callback_data=PUBLIC_MESSAGE)],
         [InlineKeyboardButton(SEND_PRIVATE_MESSAGE, callback_data=PRIVATE_MESSAGE)],
+        [InlineKeyboardButton('Cancel', callback_data='cancel')]
     ]
 )
