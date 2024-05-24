@@ -14,6 +14,7 @@ from constants.bot_messages import (
     SEND_YOUR_MESSAGE,
     SEND_USER_ID,
     NOW_SEND_YOUR_MESSAGE,
+    EXIT_BUTTON_DATA,
     EXITED_FROM_ADMIN,
     )
 
@@ -21,7 +22,8 @@ admin_id = int(config.admin_id)
 
 @Client.on_message(filters.command('admin') & filters.user(admin_id))
 async def admin_command(client: Client, message: Message):
-    await client.send_message(
+    global admin_message
+    admin_message = await client.send_message(
         chat_id=admin_id,
         text=WELCOME_ADMIN,
         reply_markup=ADMIN_OPTIONS
@@ -39,8 +41,8 @@ async def admin_callback_handler(client: Client, query: CallbackQuery):
     elif data == PRIVATE_MESSAGE:
         await send_message_to_specific_user(client)
         await query.answer(PRIVATE_MESSAGE_SENT, show_alert=True)
-    elif data == 'cancel':
-        await query.answer(EXITED_FROM_ADMIN)
+    elif data == EXIT_BUTTON_DATA:
+        await query.edit_message_text(text=EXITED_FROM_ADMIN)
         return
 
 async def send_message_to_all_users(client: Client):
