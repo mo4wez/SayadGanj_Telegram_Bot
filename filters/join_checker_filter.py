@@ -1,13 +1,13 @@
 from pyrogram import Client, filters
 from pyrogram.types import Message
 from constants.keyboards import JOIN_TO_CHANNEL_KEYBOARD
-from constants.bot_messages import PLEASE_JOIN_TO_CHANNEL
+from constants.bot_messages import PLEASE_JOIN_TO_CHANNEL, SUB_CHANNEL_ID
 
 async def is_user_joined(_, client: Client, message: Message):
     chat_id = message.chat.id
     try:
         user = await client.get_chat_member(
-            chat_id="takband_kandeel",
+            chat_id=SUB_CHANNEL_ID,
             user_id=chat_id,
         )
         if user.status == "left" or user.status == "kicked":
