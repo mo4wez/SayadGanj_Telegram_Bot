@@ -1,7 +1,7 @@
 from pyrogram import Client, filters
-from pyrogram.types import Message, CallbackQuery
+from pyrogram.types import Message, CallbackQuery, ReplyKeyboardRemove
 from main import config
-from constants.keyboards import ADMIN_OPTIONS
+from constants.keyboards import ADMIN_OPTIONS, CANCEL_KEYBOARD
 from models.users import User
 from constants.bot_messages import (
     WELCOME_ADMIN,
@@ -16,6 +16,8 @@ from constants.bot_messages import (
     NOW_SEND_YOUR_MESSAGE,
     EXIT_BUTTON_DATA,
     EXITED_FROM_ADMIN,
+    CANCEL,
+    OPERATION_CANCELED
     )
 
 admin_id = int(config.admin_id)
@@ -40,7 +42,6 @@ async def admin_callback_handler(client: Client, query: CallbackQuery):
         await query.answer(PUBLIC_MESSAGE_SENT, show_alert=True)
     elif data == PRIVATE_MESSAGE:
         await send_message_to_specific_user(client)
-        await query.answer(PRIVATE_MESSAGE_SENT, show_alert=True)
     elif data == EXIT_BUTTON_DATA:
         await query.edit_message_text(text=EXITED_FROM_ADMIN)
         return
@@ -57,8 +58,13 @@ async def send_message_to_all_users(client: Client):
 
 async def send_message_to_specific_user(client: Client):
     while True:
-        user_id_input = await client.ask(chat_id=admin_id, text=SEND_USER_ID)
+        user_id_input = await client.ask(chat_id=admin_id, text=SEND_USER_ID, reply_markup=CANCEL_KEYBOARD)
         user_id = user_id_input.text.strip()
+        print('user_id: ', user_id)
+
+        if user_id == CANCEL:
+            await client.send_message(chat_id=admin_id, text=OPERATION_CANCELED, reply_markup=ReplyKeyboardRemove())
+            break
 
         if not user_id.isdigit():
             await client.send_message(chat_id=admin_id, text="Please enter a user ID containing only digits. Try again.")
@@ -69,8 +75,12 @@ async def send_message_to_specific_user(client: Client):
             await client.send_message(chat_id=admin_id, text="Wrong user ID! Please try another one.")
             continue  # Restart the loop to prompt for an existing user ID
 
-        msg_input = await client.ask(chat_id=admin_id, text=NOW_SEND_YOUR_MESSAGE)
+        msg_input = await client.ask(chat_id=admin_id, text=NOW_SEND_YOUR_MESSAGE, reply_markup=CANCEL_KEYBOARD)
         msg = msg_input.text.strip()  # Trim leading/trailing spaces
+    
+        if msg == CANCEL:
+            await client.send_message(chat_id=admin_id, text=OPERATION_CANCELED, reply_markup=ReplyKeyboardRemove())
+            break
 
         await client.send_message(chat_id=user_id, text=msg)
         await client.send_message(chat_id=admin_id, text='Message sent to user.')
