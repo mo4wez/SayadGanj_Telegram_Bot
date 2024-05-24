@@ -6,7 +6,7 @@ PLEASE_JOIN_TO_CHANNEL = '''
 /start
 
 '''
-
+SUB_CHANNEL_ID = 'takband_kandeel'
 WELCOME_MESSAGE = 'وش آتک ئے پلیں دوست، گالے نبیس من مانا ئِـے ترا گشاں، وداریگ آں😀 \n\n❗️کیبرد ءَ اردو زبان ءِ سر ءَ بہ کن۔'
 SUB_CHANNEL_NAME = 'تاکبند کندیل ءِ چینل'
 SUB_CHANNEL_LINK = 'https://t.me/takband_kandeel'
@@ -35,6 +35,8 @@ SEND_PRIVATE_MESSAGE = 'Send private message'
 PUBLIC_MESSAGE_SENT = '✅ Message sent to users.'
 PRIVATE_MESSAGE_SENT = '✅ Message sent to user.'
 TOTAL_USERS = 'Total users: {}'
+EXIT = 'Exit'
+CHANGE_SUB_CHANNEL = 'Change sub channel'
 
 # ask messages
 SEND_YOUR_MESSAGE = 'Send your message:'
@@ -46,3 +48,5 @@ EXITED_FROM_ADMIN = 'exited from admin panel.'
 BOT_USERS_CD = 'bot_users'
 PUBLIC_MESSAGE = 'public_message'
 PRIVATE_MESSAGE = 'private_message'
+EXIT_BUTTON_DATA = 'ex'
+CHANGE_SUB_CHANNEL_DATA = 'cng_sub'

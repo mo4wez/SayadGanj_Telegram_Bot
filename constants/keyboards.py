@@ -7,6 +7,8 @@ from constants.bot_messages import (
     BOT_USERS_CD,
     PUBLIC_MESSAGE,
     PRIVATE_MESSAGE,
+    EXIT,
+    EXIT_BUTTON_DATA,
     )
 
 JOIN_TO_CHANNEL_KEYBOARD = InlineKeyboardMarkup(
@@ -25,8 +27,11 @@ INLINE_SEARCH_BUTTON = InlineKeyboardMarkup(
 ADMIN_OPTIONS = InlineKeyboardMarkup(
     [
         [InlineKeyboardButton(BOT_USERS, callback_data=BOT_USERS_CD)],
-        [InlineKeyboardButton(SEND_PUBLIC_MESSAGE, callback_data=PUBLIC_MESSAGE)],
-        [InlineKeyboardButton(SEND_PRIVATE_MESSAGE, callback_data=PRIVATE_MESSAGE)],
-        [InlineKeyboardButton('Cancel', callback_data='cancel')]
+        [
+            InlineKeyboardButton(SEND_PUBLIC_MESSAGE, callback_data=PUBLIC_MESSAGE),
+            InlineKeyboardButton(SEND_PRIVATE_MESSAGE, callback_data=PRIVATE_MESSAGE)
+        ],
+        
+        [InlineKeyboardButton(EXIT, callback_data=EXIT_BUTTON_DATA)]
     ]
 )
