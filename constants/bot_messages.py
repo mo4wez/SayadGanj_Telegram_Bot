@@ -43,6 +43,8 @@ SEND_YOUR_MESSAGE = 'Send your message:'
 SEND_USER_ID = 'Send user id:'
 NOW_SEND_YOUR_MESSAGE = 'Now Send your message:'
 EXITED_FROM_ADMIN = 'exited from admin panel.'
+CANCEL = 'Cancel'
+OPERATION_CANCELED = 'Operation cancelled. \nsend /admin to see options.'
 
 # admin callback data text
 BOT_USERS_CD = 'bot_users'
