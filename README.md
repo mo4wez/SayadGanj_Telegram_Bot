@@ -11,6 +11,11 @@ This is a Telegram bot developed using Pyrogram and SQLite to provide a Balochi 
 ## SayadGanj Bot
 ![sayadganj](https://github.com/mo4wez/SayadGanj_Telegram_Bot/assets/44638454/bfed4aa7-80a0-4c66-b7a4-ed0e176b9ef3)
 
+## See it in telegram
+```
+@sayadganj_bot
+```
+
 ## Requirements
 
 - Python 3.9 or higher
