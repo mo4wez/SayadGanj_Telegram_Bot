@@ -40,6 +40,7 @@ TOTAL_USERS = 'Total users: {}'
 SEND_YOUR_MESSAGE = 'Send your message:'
 SEND_USER_ID = 'Send user id:'
 NOW_SEND_YOUR_MESSAGE = 'Now Send your message:'
+EXITED_FROM_ADMIN = 'exited from admin panel.'
 
 # admin callback data text
 BOT_USERS_CD = 'bot_users'

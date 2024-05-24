@@ -14,6 +14,7 @@ from constants.bot_messages import (
     SEND_YOUR_MESSAGE,
     SEND_USER_ID,
     NOW_SEND_YOUR_MESSAGE,
+    EXITED_FROM_ADMIN,
     )
 
 admin_id = int(config.admin_id)
@@ -39,7 +40,7 @@ async def admin_callback_handler(client: Client, query: CallbackQuery):
         await send_message_to_specific_user(client)
         await query.answer(PRIVATE_MESSAGE_SENT, show_alert=True)
     elif data == 'cancel':
-        await query.answer('exited from admin panel.')
+        await query.answer(EXITED_FROM_ADMIN)
         return
 
 async def send_message_to_all_users(client: Client):
