@@ -41,7 +41,7 @@ This is a Telegram bot developed using Pyrogram and SQLite to provide a Balochi 
 3. **Install dependencies using Pipenv:**
 
     ```
-    virtualenc venv
+    virtualenv venv
     ```
 
 3. **Install dependencies:**
