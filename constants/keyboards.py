@@ -1,4 +1,4 @@
-from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup
+from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup, ReplyKeyboardMarkup, KeyboardButton
 from constants.bot_messages import SUB_CHANNEL_NAME, SUB_CHANNEL_LINK, INLINE_SEARCH_TITLE
 from constants.bot_messages import (
     BOT_USERS,
@@ -9,6 +9,7 @@ from constants.bot_messages import (
     PRIVATE_MESSAGE,
     EXIT,
     EXIT_BUTTON_DATA,
+    CANCEL,
     )
 
 JOIN_TO_CHANNEL_KEYBOARD = InlineKeyboardMarkup(
@@ -23,6 +24,13 @@ INLINE_SEARCH_BUTTON = InlineKeyboardMarkup(
         [InlineKeyboardButton(INLINE_SEARCH_TITLE, switch_inline_query_current_chat="")]
     ]
     )
+
+CANCEL_KEYBOARD = ReplyKeyboardMarkup(
+    [
+        [KeyboardButton(CANCEL)]
+    ],
+    resize_keyboard=True
+)
 
 ADMIN_OPTIONS = InlineKeyboardMarkup(
     [
