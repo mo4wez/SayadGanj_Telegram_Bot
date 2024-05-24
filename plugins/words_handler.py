@@ -6,7 +6,7 @@ from pyrogram.types import InlineQuery, InlineQueryResultArticle, InputTextMessa
 from filters.join_checker_filter import is_user_joined
 from models.words import WordBook
 from peewee import DoesNotExist
-from constants.bot_messages import PLEASE_CHOOSE_ONE
+from constants.bot_messages import PLEASE_CHOOSE_ONE, WORD_NOT_FOUND
 
 from main import config
 
@@ -44,6 +44,11 @@ async def search_word_handler(client: Client, message: Message):
                 text=PLEASE_CHOOSE_ONE,
                 reply_markup=reply_markup
             )
+    else:
+        await client.send_message(
+            chat_id=message.chat.id,
+            text=WORD_NOT_FOUND
+        )
 
 active_buttons = {}
 

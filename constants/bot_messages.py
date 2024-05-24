@@ -15,7 +15,7 @@ PLEASE_CHOOSE_ONE = '''
 
 👇
 '''
-
+WORD_NOT_FOUND = 'تئی لوٹتگیں گال ودی نہ بوت۔'
 INLINE_SEARCH_TITLE = 'شوهاز'
 INLINE_SEARCH_BODY = '''
 چیر ءِ بٹن ءِ جنگ ءَ گوں، تو ھم سرچ کُت کن ئے گالاں!🔥

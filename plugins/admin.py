@@ -5,7 +5,6 @@ from constants.keyboards import ADMIN_OPTIONS, CANCEL_KEYBOARD
 from models.users import User
 from constants.bot_messages import (
     WELCOME_ADMIN,
-    PRIVATE_MESSAGE_SENT,
     PUBLIC_MESSAGE_SENT,
     PUBLIC_MESSAGE,
     PRIVATE_MESSAGE,
@@ -17,7 +16,7 @@ from constants.bot_messages import (
     EXIT_BUTTON_DATA,
     EXITED_FROM_ADMIN,
     CANCEL,
-    OPERATION_CANCELED
+    OPERATION_CANCELED,
     )
 
 admin_id = int(config.admin_id)
@@ -60,7 +59,6 @@ async def send_message_to_specific_user(client: Client):
     while True:
         user_id_input = await client.ask(chat_id=admin_id, text=SEND_USER_ID, reply_markup=CANCEL_KEYBOARD)
         user_id = user_id_input.text.strip()
-        print('user_id: ', user_id)
 
         if user_id == CANCEL:
             await client.send_message(chat_id=admin_id, text=OPERATION_CANCELED, reply_markup=ReplyKeyboardRemove())
@@ -85,4 +83,3 @@ async def send_message_to_specific_user(client: Client):
         await client.send_message(chat_id=user_id, text=msg)
         await client.send_message(chat_id=admin_id, text='Message sent to user.')
         break
-

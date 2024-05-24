@@ -39,7 +39,6 @@ ADMIN_OPTIONS = InlineKeyboardMarkup(
             InlineKeyboardButton(SEND_PUBLIC_MESSAGE, callback_data=PUBLIC_MESSAGE),
             InlineKeyboardButton(SEND_PRIVATE_MESSAGE, callback_data=PRIVATE_MESSAGE)
         ],
-        
         [InlineKeyboardButton(EXIT, callback_data=EXIT_BUTTON_DATA)]
     ]
 )
