@@ -7,7 +7,7 @@ async def is_user_joined(_, client: Client, message: Message):
     chat_id = message.chat.id
     try:
         user = await client.get_chat_member(
-            chat_id="balochbit",
+            chat_id="takband_kandeel",
             user_id=chat_id,
         )
         if user.status == "left" or user.status == "kicked":
