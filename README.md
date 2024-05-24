@@ -19,7 +19,6 @@ This is a Telegram bot developed using Pyrogram and SQLite to provide a Balochi 
 ## Requirements
 
 - Python 3.9 or higher
-- Pipenv
 - Pyrogram
 - TgCrypto
 - pyromod
@@ -42,13 +41,13 @@ This is a Telegram bot developed using Pyrogram and SQLite to provide a Balochi 
 3. **Install dependencies using Pipenv:**
 
     ```
-    pipenv install & pipenv shell
+    virtualenc venv
     ```
 
 3. **Install dependencies:**
 
     ```
-    pipenv run pip install -r requirements.txt
+    pip install -r requirements.txt
     ```
 
 
@@ -67,10 +66,10 @@ This is a Telegram bot developed using Pyrogram and SQLite to provide a Balochi 
 
    You will need a database named wordbook.db for searching words.
    
-7. **Run the bot using Pipenv:**
+7. **Run the bot:**
 
     ```
-    pipenv run python main.py
+    python main.py
     ```
 
 ## Usage
