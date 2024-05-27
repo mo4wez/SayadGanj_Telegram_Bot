@@ -7,7 +7,6 @@ from filters.join_checker_filter import is_user_joined
 from models.words import WordBook
 from peewee import DoesNotExist
 from constants.bot_messages import PLEASE_CHOOSE_ONE, WORD_NOT_FOUND
-
 from main import config
 
 admin_id = int(config.admin_id)
@@ -23,7 +22,8 @@ async def search_word_handler(client: Client, message: Message):
         if len(results) < 1:
             await message.reply_text("No results found.")
         elif len(results) == 1:
-            cleaned_translation = remove_h_tags(results[0].entry)
+            cleaned_translation = remove_first_line(results[0].entry)
+            print(cleaned_translation)
             await message.reply_text(cleaned_translation)
         else:
             buttons = []
@@ -31,9 +31,9 @@ async def search_word_handler(client: Client, message: Message):
                 cleaned_translation = remove_h_tags(result.entry.replace('\n', ''))
                 splited_text = cleaned_translation.split(':')
                 if len(splited_text) > 1:
-                    text_to_display = splited_text[0]
-                else:
                     text_to_display = splited_text
+                else:
+                    text_to_display = remove_h_tags(splited_text[0])
 
                 buttons.append(
                     [InlineKeyboardButton(text=text_to_display, callback_data=f"result_{result._id}")]
@@ -65,7 +65,7 @@ async def callback_handler(client: Client, query: CallbackQuery):
         try:
             selected_result = WordBook.select().where(
                 WordBook._id == result_id,).get()
-            await query.edit_message_text(selected_result.entry)
+            await query.edit_message_text(remove_first_line(selected_result.entry))
 
             # Remove the selected button
             if chat_id in active_buttons and result_id in active_buttons[chat_id]:
@@ -89,6 +89,7 @@ async def callback_handler(client: Client, query: CallbackQuery):
 # Inline query handler
 @Client.on_inline_query()
 async def inline_query_handler(client: Client, inline_query: InlineQuery):
+
     results = await search_word(inline_query.query)
 
     inline_results = []
@@ -112,8 +113,19 @@ async def search_word(word_to_trans):
         )
         return results
     except DoesNotExist:
-        print('Not found.')
+        return None
     
 def remove_h_tags(word):
-    new_word = re.sub(r'<h1>.*?</h1>', '', word)
-    return new_word
+    match = re.search(r'<h[1-6]*>(.*?)</h[1-6]*>', word, flags=re.IGNORECASE)
+    if match:
+        return match.group(1)  # Return the content between the tags
+    return word
+
+def remove_first_line(text):
+    # Split the text into lines
+    lines = text.split('\n')
+    # Remove the first line
+    remaining_lines = lines[1:]
+    # Join the remaining lines back into a single string
+    new_text = '\n'.join(remaining_lines)
+    return new_text
