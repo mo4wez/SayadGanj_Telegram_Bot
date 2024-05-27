@@ -23,7 +23,6 @@ async def search_word_handler(client: Client, message: Message):
             await message.reply_text("No results found.")
         elif len(results) == 1:
             cleaned_translation = remove_first_line(results[0].entry)
-            print(cleaned_translation)
             await message.reply_text(cleaned_translation)
         else:
             buttons = []
