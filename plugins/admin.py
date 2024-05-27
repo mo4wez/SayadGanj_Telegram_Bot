@@ -38,7 +38,6 @@ async def admin_callback_handler(client: Client, query: CallbackQuery):
         await query.answer(TOTAL_USERS.format(bot_users), show_alert=True)
     elif data == PUBLIC_MESSAGE:
         await send_message_to_all_users(client)
-        await query.answer(PUBLIC_MESSAGE_SENT, show_alert=True)
     elif data == PRIVATE_MESSAGE:
         await send_message_to_specific_user(client)
     elif data == EXIT_BUTTON_DATA:
@@ -47,7 +46,11 @@ async def admin_callback_handler(client: Client, query: CallbackQuery):
 
 async def send_message_to_all_users(client: Client):
     users = User.select()
-    msg = await client.ask(chat_id=admin_id, text=SEND_YOUR_MESSAGE)
+    msg = await client.ask(chat_id=admin_id, text=SEND_YOUR_MESSAGE, reply_markup=CANCEL_KEYBOARD)
+
+    if msg.text == CANCEL:
+        await client.send_message(chat_id=admin_id, text=OPERATION_CANCELED, reply_markup=ReplyKeyboardRemove())
+        return
 
     for user in users:
         user_id = user.chat_id
