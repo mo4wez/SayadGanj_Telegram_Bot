@@ -5,7 +5,6 @@ from constants.keyboards import ADMIN_OPTIONS, CANCEL_KEYBOARD
 from models.users import User
 from constants.bot_messages import (
     WELCOME_ADMIN,
-    PUBLIC_MESSAGE_SENT,
     PUBLIC_MESSAGE,
     PRIVATE_MESSAGE,
     BOT_USERS_CD,
