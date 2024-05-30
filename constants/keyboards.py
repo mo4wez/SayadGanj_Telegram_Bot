@@ -21,7 +21,7 @@ JOIN_TO_CHANNEL_KEYBOARD = InlineKeyboardMarkup(
 # Inline keyboard button
 INLINE_SEARCH_BUTTON = InlineKeyboardMarkup(
     [
-        [InlineKeyboardButton(INLINE_SEARCH_TITLE, switch_inline_query="")]
+        [InlineKeyboardButton(INLINE_SEARCH_TITLE, switch_inline_query="")],
     ]
     )
 

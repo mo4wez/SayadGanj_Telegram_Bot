@@ -27,7 +27,7 @@ async def search_word_handler(client: Client, message: Message):
         else:
             buttons = []
             for result in results:
-                cleaned_translation = remove_h_tags(result.entry.replace('\n', ''))
+                cleaned_translation = remove_h_tags(result.entry)
                 splited_text = cleaned_translation.split(':')
                 if len(splited_text) > 1:
                     text_to_display = splited_text
@@ -115,9 +115,16 @@ async def search_word(word_to_trans):
         return None
     
 def remove_h_tags(word):
-    match = re.search(r'<h[1-6]*>(.*?)</h[1-6]*>', word, flags=re.IGNORECASE)
+    # Updated regex to handle cases with missing closing '>'
+    match = re.search(r'<h[1-6]>(.*?)<\/h[1-6]>', word, flags=re.IGNORECASE)
     if match:
         return match.group(1)  # Return the content between the tags
+    
+    # If no match with proper closing tag, try to handle missing '>'
+    match = re.search(r'<h[1-6]>(.*?)(?=<\/h[1-6]|$)', word, flags=re.IGNORECASE)
+    if match:
+        return match.group(1)
+    
     return word
 
 def remove_first_line(text):
