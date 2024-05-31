@@ -64,7 +64,20 @@ async def callback_handler(client: Client, query: CallbackQuery):
         try:
             selected_result = WordBook.select().where(
                 WordBook._id == result_id,).get()
-            await query.edit_message_text(remove_first_line(selected_result.entry))
+            full_text = remove_first_line(selected_result.entry)
+
+            if len(full_text) > 4096:
+                # Split the full_text into chunks of 4096 characters
+                chunks = [full_text[i:i + 4096] for i in range(0, len(full_text), 4096)]
+
+                # Edit the message with the first chunk
+                await query.edit_message_text(chunks[0])
+
+                # Send the remaining chunks as new messages
+                for chunk in chunks[1:]:
+                    await client.send_message(chat_id=chat_id, text=chunk)
+            else:
+                await query.edit_message_text(full_text)
 
             # Remove the selected button
             if chat_id in active_buttons and result_id in active_buttons[chat_id]:
@@ -81,7 +94,8 @@ async def callback_handler(client: Client, query: CallbackQuery):
             await query.edit_message_reply_markup(InlineKeyboardMarkup(new_buttons))
         except DoesNotExist:
             await query.answer('No results found.')
-        except Exception:
+        except Exception as e:
+            print(f'Error: {e}')
             await query.answer('An error occurred.')
 
 
