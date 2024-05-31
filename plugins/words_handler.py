@@ -88,10 +88,20 @@ async def callback_handler(client: Client, query: CallbackQuery):
             for row in keyboard:
                 new_row = []
                 for button in row:
-                    if int(button.callback_data.split("_")[1]) not in active_buttons.get(chat_id, []):
-                        new_row.append(button)
-                        new_buttons.append(new_row)
+                    if int(button.callback_data.split("_")[1]) == result_id:
+                        # Add the "▫️" to the selected button
+                        if not button.text.startswith("▫️ "):
+                            new_text = "▫️ " + button.text
+                        else:
+                            new_text = button.text
+                    else:
+                        # Remove the "▫️" from other buttons
+                        new_text = button.text.replace("▫️ ", "")
+                    new_row.append(InlineKeyboardButton(text=new_text, callback_data=button.callback_data))
+                new_buttons.append(new_row)
+                
             await query.edit_message_reply_markup(InlineKeyboardMarkup(new_buttons))
+
         except DoesNotExist:
             await query.answer('No results found.')
         except Exception as e:
