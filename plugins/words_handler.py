@@ -11,7 +11,7 @@ from main import config
 
 admin_id = int(config.admin_id)
 
-@Client.on_message((~filters.regex(r"^\(") & filters.text))
+@Client.on_message((~filters.via_bot & filters.text))
 async def search_word_handler(client: Client, message: Message):
     if not await is_user_joined(None, client, message):
         return
@@ -23,15 +23,22 @@ async def search_word_handler(client: Client, message: Message):
             await message.reply_text("No results found.")
         elif len(results) == 1:
             cleaned_translation = remove_first_line(results[0].entry)
-            await message.reply_text(cleaned_translation)
+            if len(cleaned_translation) > 4096:
+                chunks = chunck_text(cleaned_translation)
+                for chunk in chunks[1:]:
+                    await message.reply_text(chunk)
+            else:
+                await message.reply_text(cleaned_translation)
         else:
             buttons = []
             for result in results:
                 cleaned_translation = remove_first_line(result.entry)
                 splited_text = cleaned_translation.split(':')
+
                 if splited_text[0].startswith('\n'):
                     text_to_display = splited_text[0].split('\n')[1].strip()
-                    print(text_to_display)
+                elif splited_text[0].startswith('<h'):
+                    text_to_display = remove_first_line(splited_text[0])
                 else:
                     text_to_display = splited_text[0]
 
@@ -68,8 +75,7 @@ async def callback_handler(client: Client, query: CallbackQuery):
             full_text = remove_first_line(selected_result.entry)
 
             if len(full_text) > 4096:
-                # Split the full_text into chunks of 4096 characters
-                chunks = [full_text[i:i + 4096] for i in range(0, len(full_text), 4096)]
+                chunks = chunck_text(full_text)
 
                 # Edit the message with the first chunk
                 await query.edit_message_text(chunks[0])
@@ -161,3 +167,7 @@ def remove_first_line(text):
     # Join the remaining lines back into a single string
     new_text = '\n'.join(remaining_lines)
     return new_text
+
+def chunck_text(full_text):
+    chunks = [full_text[i:i + 4096] for i in range(0, len(full_text), 4096)]
+    return chunks
