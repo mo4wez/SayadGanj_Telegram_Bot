@@ -51,7 +51,7 @@ async def search_word_handler(client: Client, message: Message):
 
 active_buttons = {}
 
-@Client.on_callback_query(group=1)
+@Client.on_callback_query(filters.regex(r'^result_'), group=2)
 async def callback_handler(client: Client, query: CallbackQuery):
     message = query.message
     chat_id = message.chat.id
@@ -104,8 +104,7 @@ async def callback_handler(client: Client, query: CallbackQuery):
 
         except DoesNotExist:
             await query.answer('No results found.')
-        except Exception as e:
-            print(f'Error: {e}')
+        except Exception:
             await query.answer('An error occurred.')
 
 
