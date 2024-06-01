@@ -120,14 +120,14 @@ async def callback_handler(client: Client, query: CallbackQuery):
 async def inline_query_handler(client: Client, inline_query: InlineQuery):
     query = inline_query.query
 
-    results = await search_word(query)
+    results = await inline_search_word(query)
     inline_results = []
     if results:
         for result in results:
             cleaned_translation = remove_first_line(result.entry)
-            splited_text = cleaned_translation.split(':')
-            cleaned_title = splited_text[0]
-            cleaned_desc = splited_text[1]
+            splited_text = cleaned_translation.split(':', 1)
+            cleaned_title = splited_text[0].strip()
+            cleaned_desc = splited_text[1].strip() if len(splited_text) > 1 else ""
 
             input_content = InputTextMessageContent(cleaned_desc)
             inline_result = InlineQueryResultArticle(
@@ -158,15 +158,19 @@ async def search_word(word_to_trans):
         return results
     except DoesNotExist:
         return None
+    
+async def inline_search_word(word_to_trans):
+    try:
+        query_pattern = f"%{word_to_trans}%"
+        results = WordBook.select().where(
+            WordBook.langFullWord ** query_pattern
+        )
+        return results
+    except DoesNotExist:
+        return None
 
 def remove_first_line(text):
-    # Split the text into lines
-    lines = text.split('\n')
-    # Remove the first line
-    remaining_lines = lines[1:]
-    # Join the remaining lines back into a single string
-    new_text = '\n'.join(remaining_lines)
-    return new_text
+    return '\n'.join(text.split('\n')[1:]) if '\n' in text else text
 
 def chunck_text(full_text):
     chunks = [full_text[i:i + 4096] for i in range(0, len(full_text), 4096)]
