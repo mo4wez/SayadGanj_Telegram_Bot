@@ -11,7 +11,7 @@ from main import config
 
 admin_id = int(config.admin_id)
 
-@Client.on_message((filters.text))
+@Client.on_message((~filters.regex(r"^\(") & filters.text))
 async def search_word_handler(client: Client, message: Message):
     if not await is_user_joined(None, client, message):
         return
