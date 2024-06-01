@@ -6,7 +6,7 @@ from pyrogram.types import InlineQuery, InlineQueryResultArticle, InputTextMessa
 from filters.join_checker_filter import is_user_joined
 from models.words import WordBook
 from peewee import DoesNotExist
-from constants.bot_messages import PLEASE_CHOOSE_ONE, WORD_NOT_FOUND
+from constants.bot_messages import PLEASE_CHOOSE_ONE, WORD_NOT_FOUND, INLINE_RESULT_NOT_FOUND_TITLE, INLINE_RESULT_NOT_FOUND_DESC, INLINE_RESULT_INPUT_MSG_CONTENT
 from main import config
 
 admin_id = int(config.admin_id)
@@ -108,26 +108,37 @@ async def callback_handler(client: Client, query: CallbackQuery):
 # Inline query handler
 @Client.on_inline_query()
 async def inline_query_handler(client: Client, inline_query: InlineQuery):
+    query = inline_query.query
 
-    results = await search_word(inline_query.query)
-
+    results = await search_word(query)
     inline_results = []
-    for result in results:
-        cleaned_translation = remove_first_line(result.entry)
-        splited_text = cleaned_translation.split(':')
-        cleaned_title = splited_text[0]
-        cleaned_desc = splited_text[1]
+    if results:
+        for result in results:
+            cleaned_translation = remove_first_line(result.entry)
+            splited_text = cleaned_translation.split(':')
+            cleaned_title = splited_text[0]
+            cleaned_desc = splited_text[1]
 
-        input_content = InputTextMessageContent(cleaned_desc)
+            input_content = InputTextMessageContent(cleaned_desc)
+            inline_result = InlineQueryResultArticle(
+                id=str(result._id),
+                title=cleaned_title,
+                description=cleaned_desc,
+                input_message_content=input_content
+            )
+            inline_results.append(inline_result)
+    else:
+        # Create a result indicating no results were found
         inline_result = InlineQueryResultArticle(
-            id=str(result._id),
-            title=cleaned_title,
-            description=cleaned_desc,
-            input_message_content=input_content
+            id="no_results",
+            title=INLINE_RESULT_NOT_FOUND_TITLE,
+            description=INLINE_RESULT_NOT_FOUND_DESC.format(query),
+            input_message_content=InputTextMessageContent(INLINE_RESULT_INPUT_MSG_CONTENT)
         )
         inline_results.append(inline_result)
 
     await inline_query.answer(inline_results)
+
     
 async def search_word(word_to_trans):
     try:

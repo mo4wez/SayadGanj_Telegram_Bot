@@ -24,6 +24,11 @@ INLINE_SEARCH_BODY = '''
 
 @sayadganj_bot گال
 '''
+INLINE_RESULT_NOT_FOUND_TITLE = '❌'
+INLINE_RESULT_NOT_FOUND_DESC = 'پہ "{}" ءَ ھچ ھمدپیں آسرے دست نہ کپت۔'
+INLINE_RESULT_INPUT_MSG_CONTENT = '''
+آسرے دست نہ کپت، وتی شوھازگال ءَ ایرت چاری بہ کن۔ پدا کوشست بہ کن پہ شوھاز ءَ۔
+'''
 
 # Admin messages
 WELCOME_ADMIN = 'Hi Admin, here you can do with buttons.'
