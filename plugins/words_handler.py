@@ -29,7 +29,11 @@ async def search_word_handler(client: Client, message: Message):
             for result in results:
                 cleaned_translation = remove_first_line(result.entry)
                 splited_text = cleaned_translation.split(':')
-                text_to_display = splited_text[0]
+                if splited_text[0].startswith('\n'):
+                    text_to_display = splited_text[0].split('\n')[1].strip()
+                    print(text_to_display)
+                else:
+                    text_to_display = splited_text[0]
 
                 buttons.append(
                     [InlineKeyboardButton(text=text_to_display, callback_data=f"result_{result._id}")]
@@ -43,7 +47,7 @@ async def search_word_handler(client: Client, message: Message):
     else:
         await client.send_message(
             chat_id=message.chat.id,
-            text=WORD_NOT_FOUND
+            text=WORD_NOT_FOUND.format(balochi_word)
         )
 
 active_buttons = {}
