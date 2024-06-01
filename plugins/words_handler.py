@@ -27,12 +27,9 @@ async def search_word_handler(client: Client, message: Message):
         else:
             buttons = []
             for result in results:
-                cleaned_translation = remove_h_tags(result.entry)
+                cleaned_translation = remove_first_line(result.entry)
                 splited_text = cleaned_translation.split(':')
-                if len(splited_text) > 1:
-                    text_to_display = splited_text
-                else:
-                    text_to_display = remove_h_tags(splited_text[0])
+                text_to_display = splited_text[0]
 
                 buttons.append(
                     [InlineKeyboardButton(text=text_to_display, callback_data=f"result_{result._id}")]
@@ -116,17 +113,21 @@ async def inline_query_handler(client: Client, inline_query: InlineQuery):
 
     inline_results = []
     for result in results:
-        cleaned_entry = remove_h_tags(result.entry.split(':')[1])
-        input_content = InputTextMessageContent(cleaned_entry)
+        cleaned_translation = remove_first_line(result.entry)
+        splited_text = cleaned_translation.split(':')
+        cleaned_title = splited_text[0]
+        cleaned_desc = splited_text[1]
+
+        input_content = InputTextMessageContent(cleaned_desc)
         inline_result = InlineQueryResultArticle(
             id=str(result._id),
-            title=cleaned_entry,
+            title=cleaned_title,
+            description=cleaned_desc,
             input_message_content=input_content
         )
         inline_results.append(inline_result)
-    
-    await inline_query.answer(inline_results)
 
+    await inline_query.answer(inline_results)
     
 async def search_word(word_to_trans):
     try:
@@ -136,19 +137,6 @@ async def search_word(word_to_trans):
         return results
     except DoesNotExist:
         return None
-    
-def remove_h_tags(word):
-    # Updated regex to handle cases with missing closing '>'
-    match = re.search(r'<h[1-6]>(.*?)<\/h[1-6]>', word, flags=re.IGNORECASE)
-    if match:
-        return match.group(1)  # Return the content between the tags
-    
-    # If no match with proper closing tag, try to handle missing '>'
-    match = re.search(r'<h[1-6]>(.*?)(?=<\/h[1-6]|$)', word, flags=re.IGNORECASE)
-    if match:
-        return match.group(1)
-    
-    return word
 
 def remove_first_line(text):
     # Split the text into lines
