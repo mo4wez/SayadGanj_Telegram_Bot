@@ -1,8 +1,8 @@
 from pyrogram import Client, filters
-from pyrogram.types import Message
+from pyrogram.types import Message, CallbackQuery
 from filters.join_checker_filter import is_user_joined
 from models.users import User
-from constants.bot_messages import WELCOME_MESSAGE, INLINE_SEARCH_BODY
+from constants.bot_messages import WELCOME_MESSAGE, INLINE_SEARCH_BODY, DONATION_MESSAGE
 from constants.keyboards import INLINE_SEARCH_BUTTON
 
 from main import config
@@ -43,3 +43,12 @@ async def search(client: Client, message: Message):
         text=INLINE_SEARCH_BODY,
         reply_markup=INLINE_SEARCH_BUTTON
     )
+
+@Client.on_message(filters.command('donate'))
+async def donate(client: Client, message: Message):
+    chat_id = message.chat.id
+    
+    if not await is_user_joined(None, client, message):
+        return
+    
+    await message.reply_text(DONATION_MESSAGE)

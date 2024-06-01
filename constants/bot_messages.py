@@ -55,3 +55,10 @@ PUBLIC_MESSAGE = 'public_message'
 PRIVATE_MESSAGE = 'private_message'
 EXIT_BUTTON_DATA = 'ex'
 CHANGE_SUB_CHANNEL_DATA = 'cng_sub'
+
+DONATION_MESSAGE = '''
+سیدگنج ءِ ربوٹ ءِ زندگ دارگ ءِ واستا، مالی بنیاد ءَ کمک پکار انت۔
+آیوکی روچاں پہ شما ڈسے ایر کنگ بیت کہ اگاں شمارا دوست بوت، توان اِت کمک بہ کن ات۔
+
+منتوار
+'''
