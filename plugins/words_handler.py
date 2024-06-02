@@ -137,7 +137,7 @@ async def inline_query_handler(client: Client, inline_query: InlineQuery):
             cleaned_translation = remove_first_line(result.entry)
             splited_text = cleaned_translation.split(':', 1)
             cleaned_title = splited_text[0].strip()[:MAX_TITLE_LENGTH]
-            cleaned_desc = (splited_text[1].strip()[:MAX_DESC_LENGTH] if len(splited_text) > 1 else "")[:MAX_DESC_LENGTH]
+            cleaned_desc = f'{cleaned_title}:\n{splited_text[1].strip()}'
 
             # Check if cleaned_title or cleaned_desc are empty
             if not cleaned_title or not cleaned_desc:
