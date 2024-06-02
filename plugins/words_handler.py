@@ -1,4 +1,3 @@
-import re
 from pyrogram import Client, filters
 from pyrogram.types import Message, CallbackQuery
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup
@@ -9,9 +8,15 @@ from peewee import DoesNotExist
 from constants.bot_messages import PLEASE_CHOOSE_ONE, WORD_NOT_FOUND, INLINE_RESULT_NOT_FOUND_TITLE, INLINE_RESULT_NOT_FOUND_DESC, INLINE_RESULT_INPUT_MSG_CONTENT
 from main import config
 
+import logging
+
+# Set up logging
+logging.basicConfig(level=logging.DEBUG)
+logger = logging.getLogger(__name__)
+
 admin_id = int(config.admin_id)
 
-@Client.on_message((~filters.via_bot & filters.text))
+@Client.on_message((~filters.via_bot & ~filters.regex(r"^\/") & filters.text))
 async def search_word_handler(client: Client, message: Message):
     if not await is_user_joined(None, client, message):
         return
@@ -115,6 +120,10 @@ async def callback_handler(client: Client, query: CallbackQuery):
             await query.answer('An error occurred.')
 
 
+MAX_RESULTS = 50  # Maximum number of results to return
+MAX_TITLE_LENGTH = 50  # Maximum length for the title
+MAX_DESC_LENGTH = 200  # Maximum length for the description
+
 # Inline query handler
 @Client.on_inline_query()
 async def inline_query_handler(client: Client, inline_query: InlineQuery):
@@ -123,11 +132,17 @@ async def inline_query_handler(client: Client, inline_query: InlineQuery):
     results = await inline_search_word(query)
     inline_results = []
     if results:
+        total_length = 0
         for result in results:
             cleaned_translation = remove_first_line(result.entry)
             splited_text = cleaned_translation.split(':', 1)
-            cleaned_title = splited_text[0].strip()
-            cleaned_desc = splited_text[1].strip() if len(splited_text) > 1 else ""
+            cleaned_title = splited_text[0].strip()[:MAX_TITLE_LENGTH]
+            cleaned_desc = (splited_text[1].strip()[:MAX_DESC_LENGTH] if len(splited_text) > 1 else "")[:MAX_DESC_LENGTH]
+
+            # Check if cleaned_title or cleaned_desc are empty
+            if not cleaned_title or not cleaned_desc:
+                logger.warning(f"Empty title or description for result: {result}")
+                continue
 
             input_content = InputTextMessageContent(cleaned_desc)
             inline_result = InlineQueryResultArticle(
@@ -136,6 +151,15 @@ async def inline_query_handler(client: Client, inline_query: InlineQuery):
                 description=cleaned_desc,
                 input_message_content=input_content
             )
+
+            # Estimate the length of the current result
+            result_length = len(cleaned_title) + len(cleaned_desc) + 50  # Rough estimate including overhead
+            total_length += result_length
+
+            # If total_length exceeds a certain threshold, stop adding more results
+            if total_length > 4000:  # Telegram's total length limit for inline query results
+                break
+
             inline_results.append(inline_result)
     else:
         # Create a result indicating no results were found
@@ -158,13 +182,17 @@ async def search_word(word_to_trans):
         return results
     except DoesNotExist:
         return None
-    
+
 async def inline_search_word(word_to_trans):
     try:
         query_pattern = f"%{word_to_trans}%"
-        results = WordBook.select().where(
-            WordBook.langFullWord ** query_pattern
-        )
+        results = (WordBook
+                   .select()
+                   .where((WordBook.langFullWord == word_to_trans) | 
+                          (WordBook.langFullWord.contains(word_to_trans)))
+                   .limit(50)
+                   .execute())
+        print(f'results: {len(results)}')
         return results
     except DoesNotExist:
         return None

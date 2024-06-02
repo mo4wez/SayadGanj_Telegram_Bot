@@ -50,12 +50,13 @@ async def send_message_to_all_users(client: Client):
     if msg.text == CANCEL:
         await client.send_message(chat_id=admin_id, text=OPERATION_CANCELED, reply_markup=ReplyKeyboardRemove())
         return
-
+    
     for user in users:
         user_id = user.chat_id
         if user_id == str(admin_id):
             continue
         await client.send_message(chat_id=user_id, text=msg.text)
+    await client.send_message(chat_id=admin_id, text='Message sent to users.', reply_markup=ReplyKeyboardRemove())
 
 async def send_message_to_specific_user(client: Client):
     while True:
@@ -83,5 +84,5 @@ async def send_message_to_specific_user(client: Client):
             break
 
         await client.send_message(chat_id=user_id, text=msg)
-        await client.send_message(chat_id=admin_id, text='Message sent to user.')
+        await client.send_message(chat_id=admin_id, text='Message sent to user.', reply_markup=ReplyKeyboardRemove())
         break
