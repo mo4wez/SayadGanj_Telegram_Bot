@@ -190,9 +190,8 @@ async def inline_search_word(word_to_trans):
                    .select()
                    .where((WordBook.langFullWord == word_to_trans) | 
                           (WordBook.langFullWord.contains(word_to_trans)))
-                   .limit(50)
+                   .limit(MAX_RESULTS)
                    .execute())
-        print(f'results: {len(results)}')
         return results
     except DoesNotExist:
         return None
