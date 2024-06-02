@@ -1,11 +1,15 @@
+import logging
 from pyrogram import Client, filters
 from pyrogram.types import Message, CallbackQuery
 from filters.join_checker_filter import is_user_joined
 from models.users import User
-from constants.bot_messages import WELCOME_MESSAGE, INLINE_SEARCH_BODY, DONATION_MESSAGE
+from constants.bot_messages import WELCOME_MESSAGE, INLINE_SEARCH_BODY, DONATION_MESSAGE, TUTORIAL_VIDEO_FORWARD_FAILED
 from constants.keyboards import INLINE_SEARCH_BUTTON
-
 from main import config
+
+# Set up logging
+logging.basicConfig(level=logging.DEBUG)
+logger = logging.getLogger(__name__)
 
 admin_id = int(config.admin_id)
 
@@ -46,9 +50,25 @@ async def search(client: Client, message: Message):
 
 @Client.on_message(filters.command('donate'))
 async def donate(client: Client, message: Message):
-    chat_id = message.chat.id
     
     if not await is_user_joined(None, client, message):
         return
     
     await message.reply_text(DONATION_MESSAGE)
+
+
+@Client.on_message(filters.command('tutorial'))
+async def tutorial(client: Client, message: Message):
+    channel_id = "sayadganjarc"
+    message_id = 4
+
+    try:
+        # Copy the video from the public channel to the user
+        await client.copy_message(
+            chat_id=message.chat.id,
+            from_chat_id=channel_id,
+            message_id=message_id
+        )
+    except Exception as e:
+        logger.error(f"Failed to copy video: {e}")
+        await message.reply(TUTORIAL_VIDEO_FORWARD_FAILED)
