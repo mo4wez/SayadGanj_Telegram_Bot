@@ -62,6 +62,9 @@ async def tutorial(client: Client, message: Message):
     channel_id = "sayadganjarc"
     message_id = 4
 
+    if not await is_user_joined(None, client, message):
+        return
+
     try:
         # Copy the video from the public channel to the user
         await client.copy_message(
