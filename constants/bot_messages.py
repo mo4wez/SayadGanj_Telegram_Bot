@@ -54,7 +54,9 @@ BOT_USERS_CD = 'bot_users'
 PUBLIC_MESSAGE = 'public_message'
 PRIVATE_MESSAGE = 'private_message'
 EXIT_BUTTON_DATA = 'ex'
-CHANGE_SUB_CHANNEL_DATA = 'cng_sub'
+NEW_POST_CALLBACK_TEXT = 'new_post'
+NEW_POST_KEYBOARD_TEXT = 'New Post'
+VIEW_POST_KEYBOARD_TEXT = 'پست ءِ چارگ'
 
 DONATION_MESSAGE = '''
 سیدگنج ءِ ربوٹ ءِ زندگ دارگ ءِ واستا، مالی بنیاد ءَ کمک پکار انت۔

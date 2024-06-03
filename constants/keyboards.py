@@ -10,6 +10,8 @@ from constants.bot_messages import (
     EXIT,
     EXIT_BUTTON_DATA,
     CANCEL,
+    NEW_POST_CALLBACK_TEXT,
+    NEW_POST_KEYBOARD_TEXT
     )
 
 JOIN_TO_CHANNEL_KEYBOARD = InlineKeyboardMarkup(
@@ -39,6 +41,17 @@ ADMIN_OPTIONS = InlineKeyboardMarkup(
             InlineKeyboardButton(SEND_PUBLIC_MESSAGE, callback_data=PUBLIC_MESSAGE),
             InlineKeyboardButton(SEND_PRIVATE_MESSAGE, callback_data=PRIVATE_MESSAGE)
         ],
+        [
+            InlineKeyboardButton(NEW_POST_KEYBOARD_TEXT, callback_data=NEW_POST_CALLBACK_TEXT)
+        ],
         [InlineKeyboardButton(EXIT, callback_data=EXIT_BUTTON_DATA)]
     ]
+)
+
+ADMIN_CHOOSE_WHERE_POST_SENDS_KEYBOARD = ReplyKeyboardMarkup(
+    [
+        [KeyboardButton(text='👥 To users'), KeyboardButton(text='📢 To channel')],
+        [KeyboardButton(text='Cancel')]
+    ],
+    resize_keyboard=True
 )
