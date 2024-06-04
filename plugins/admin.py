@@ -4,6 +4,7 @@ from pyrogram.types import Message, CallbackQuery, ReplyKeyboardRemove, InlineKe
 from main import config
 from constants.keyboards import ADMIN_OPTIONS, CANCEL_KEYBOARD, ADMIN_CHOOSE_WHERE_POST_SENDS_KEYBOARD
 from models.users import User
+from time import sleep
 from constants.bot_messages import (
     WELCOME_ADMIN,
     PUBLIC_MESSAGE,
@@ -55,13 +56,16 @@ async def send_message_to_all_users(client: Client):
     if msg.text == CANCEL:
         await client.send_message(chat_id=admin_id, text=OPERATION_CANCELED, reply_markup=ReplyKeyboardRemove())
         return
-    
-    for user in users:
-        user_id = user.chat_id
-        if user_id == str(admin_id):
-            continue
-        await client.send_message(chat_id=user_id, text=msg.text)
-    await client.send_message(chat_id=admin_id, text='Message sent to users.', reply_markup=ReplyKeyboardRemove())
+    try:
+        for user in users:
+            user_id = user.chat_id
+            if user_id == str(admin_id):
+                continue
+            await client.send_message(chat_id=user_id, text=msg.text)
+            sleep(0.5)
+        await client.send_message(chat_id=admin_id, text='Message sent to users.', reply_markup=ReplyKeyboardRemove())
+    except Exception as e:
+        await client.send_message(chat_id=admin_id, text=f'Error: {e}', reply_markup=ReplyKeyboardRemove())
 
 async def send_message_to_specific_user(client: Client):
     while True:
