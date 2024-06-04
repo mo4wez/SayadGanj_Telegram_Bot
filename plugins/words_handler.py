@@ -16,7 +16,7 @@ logger = logging.getLogger(__name__)
 
 admin_id = int(config.admin_id)
 
-@Client.on_message((~filters.via_bot & ~filters.regex(r"^\/") & filters.text))
+@Client.on_message((~filters.via_bot & ~filters.regex(r"^\/") & filters.text & filters.private))
 async def search_word_handler(client: Client, message: Message):
     if not await is_user_joined(None, client, message):
         return
