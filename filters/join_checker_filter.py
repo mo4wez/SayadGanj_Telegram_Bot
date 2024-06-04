@@ -3,6 +3,7 @@ from pyrogram.types import Message
 from constants.keyboards import JOIN_TO_CHANNEL_KEYBOARD
 from constants.bot_messages import PLEASE_JOIN_TO_CHANNEL, SUB_CHANNEL_ID
 
+@Client.on_message(filters.private)
 async def is_user_joined(_, client: Client, message: Message):
     chat_id = message.chat.id
     try:
@@ -15,7 +16,6 @@ async def is_user_joined(_, client: Client, message: Message):
         else:
             return True
     except Exception as e:
-        print('error:', e)
         await client.send_message(
             chat_id=chat_id,
             text=PLEASE_JOIN_TO_CHANNEL,
