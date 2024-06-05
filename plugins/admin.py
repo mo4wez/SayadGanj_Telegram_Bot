@@ -57,9 +57,10 @@ async def send_message_to_all_users(client: Client):
     if msg.text == CANCEL:
         await client.send_message(chat_id=admin_id, text=OPERATION_CANCELED, reply_markup=ReplyKeyboardRemove())
         return
-    
+
     blocked_users = []
     deactivated_users = []
+    invalid_users = []
 
     try:
         for user in users:
@@ -73,23 +74,34 @@ async def send_message_to_all_users(client: Client):
             except Exception as e:
                 error_message = str(e)
                 if 'PEER_ID_INVALID' in error_message:
-                    # Handle the case where the user ID is invalid
+                    invalid_users.append((username, user_id))
                     continue
                 elif 'USER_IS_BLOCKED' in error_message:
                     blocked_users.append((username, user_id))
+                    continue
                 elif 'INPUT_USER_DEACTIVATED' in error_message:
                     deactivated_users.append((username, user_id))
+                    continue
                 else:
                     # Log or handle other exceptions
                     await client.send_message(chat_id=admin_id, text=f'Error: {e}', reply_markup=ReplyKeyboardRemove())
         
-        if blocked_users or deactivated_users:
+        report_parts = []
+        if blocked_users:
             blocked_msg = "Blocked users:\n" + "\n".join([f"Username: {username}, Chat ID: {user_id}" for username, user_id in blocked_users])
+            report_parts.append(blocked_msg)
+        if deactivated_users:
             deactivated_msg = "Deactivated users:\n" + "\n".join([f"Username: {username}, Chat ID: {user_id}" for username, user_id in deactivated_users])
-            final_msg = blocked_msg + "\n\n" + deactivated_msg
+            report_parts.append(deactivated_msg)
+        if invalid_users:
+            invalid_msg = "Invalid users:\n" + "\n".join([f"Username: {username}, Chat ID: {user_id}" for username, user_id in invalid_users])
+            report_parts.append(invalid_msg)
+        
+        if report_parts:
+            final_msg = "\n\n".join(report_parts)
             await client.send_message(chat_id=admin_id, text=final_msg, reply_markup=ReplyKeyboardRemove())
         else:
-            await client.send_message(chat_id=admin_id, text='Message sent to users. No users blocked the bot or were deactivated.', reply_markup=ReplyKeyboardRemove())
+            await client.send_message(chat_id=admin_id, text='Message sent to users. No issues encountered.', reply_markup=ReplyKeyboardRemove())
     
     except Exception as e:
         await client.send_message(chat_id=admin_id, text=f'Error: {e}', reply_markup=ReplyKeyboardRemove())
