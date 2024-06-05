@@ -50,6 +50,8 @@ async def admin_callback_handler(client: Client, query: CallbackQuery):
         await query.edit_message_text(text=EXITED_FROM_ADMIN)
         return
 
+MAX_MESSAGE_LENGTH = 4096
+
 async def send_message_to_all_users(client: Client):
     users = User.select()
     msg = await client.ask(chat_id=admin_id, text=SEND_YOUR_MESSAGE, reply_markup=CANCEL_KEYBOARD)
@@ -57,7 +59,7 @@ async def send_message_to_all_users(client: Client):
     if msg.text == CANCEL:
         await client.send_message(chat_id=admin_id, text=OPERATION_CANCELED, reply_markup=ReplyKeyboardRemove())
         return
-
+    
     blocked_users = []
     deactivated_users = []
     invalid_users = []
@@ -70,7 +72,7 @@ async def send_message_to_all_users(client: Client):
                 continue
             try:
                 await client.send_message(chat_id=user_id, text=msg.text)
-                await asyncio.sleep(0.5)  # Use asyncio.sleep instead of sleep
+                await asyncio.sleep(0.2)
             except Exception as e:
                 error_message = str(e)
                 if 'PEER_ID_INVALID' in error_message:
@@ -98,8 +100,11 @@ async def send_message_to_all_users(client: Client):
             report_parts.append(invalid_msg)
         
         if report_parts:
-            final_msg = "\n\n".join(report_parts)
-            await client.send_message(chat_id=admin_id, text=final_msg, reply_markup=ReplyKeyboardRemove())
+            final_report = "\n\n".join(report_parts)
+            # Split the final report into chunks of MAX_MESSAGE_LENGTH
+            for i in range(0, len(final_report), MAX_MESSAGE_LENGTH):
+                chunk = final_report[i:i + MAX_MESSAGE_LENGTH]
+                await client.send_message(chat_id=admin_id, text=chunk, reply_markup=ReplyKeyboardRemove())
         else:
             await client.send_message(chat_id=admin_id, text='Message sent to users. No issues encountered.', reply_markup=ReplyKeyboardRemove())
     
