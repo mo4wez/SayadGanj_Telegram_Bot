@@ -1,4 +1,5 @@
 import re
+import asyncio
 from pyrogram import Client, filters
 from pyrogram.types import Message, CallbackQuery, ReplyKeyboardRemove, InlineKeyboardMarkup, InlineKeyboardButton
 from main import config
@@ -56,13 +57,22 @@ async def send_message_to_all_users(client: Client):
     if msg.text == CANCEL:
         await client.send_message(chat_id=admin_id, text=OPERATION_CANCELED, reply_markup=ReplyKeyboardRemove())
         return
+    
     try:
         for user in users:
             user_id = user.chat_id
             if user_id == str(admin_id):
                 continue
-            await client.send_message(chat_id=user_id, text=msg.text)
-            sleep(0.5)
+            try:
+                await client.send_message(chat_id=user_id, text=msg.text)
+                await asyncio.sleep(0.5)  # Use asyncio.sleep instead of sleep
+            except Exception as e:
+                if 'PEER_ID_INVALID' in str(e):
+                    # Handle the case where the user ID is invalid
+                    continue
+                else:
+                    # Log or handle other exceptions
+                    await client.send_message(chat_id=admin_id, text=f'Error: {e}', reply_markup=ReplyKeyboardRemove()) 
         await client.send_message(chat_id=admin_id, text='Message sent to users.', reply_markup=ReplyKeyboardRemove())
     except Exception as e:
         await client.send_message(chat_id=admin_id, text=f'Error: {e}', reply_markup=ReplyKeyboardRemove())
