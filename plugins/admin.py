@@ -1,11 +1,11 @@
 import re
+import os
 import asyncio
 from pyrogram import Client, filters
 from pyrogram.types import Message, CallbackQuery, ReplyKeyboardRemove, InlineKeyboardMarkup, InlineKeyboardButton
 from main import config
 from constants.keyboards import ADMIN_OPTIONS, CANCEL_KEYBOARD, ADMIN_CHOOSE_WHERE_POST_SENDS_KEYBOARD
 from models.users import User
-from time import sleep
 from constants.bot_messages import (
     WELCOME_ADMIN,
     PUBLIC_MESSAGE,
@@ -50,8 +50,6 @@ async def admin_callback_handler(client: Client, query: CallbackQuery):
         await query.edit_message_text(text=EXITED_FROM_ADMIN)
         return
 
-MAX_MESSAGE_LENGTH = 4096
-
 async def send_message_to_all_users(client: Client):
     users = User.select()
     msg = await client.ask(chat_id=admin_id, text=SEND_YOUR_MESSAGE, reply_markup=CANCEL_KEYBOARD)
@@ -77,15 +75,17 @@ async def send_message_to_all_users(client: Client):
                 error_message = str(e)
                 if 'PEER_ID_INVALID' in error_message:
                     invalid_users.append((username, user_id))
+                    User.delete().where(User.chat_id == user_id).execute()
                     continue
                 elif 'USER_IS_BLOCKED' in error_message:
                     blocked_users.append((username, user_id))
+                    User.delete().where(User.chat_id == user_id).execute()
                     continue
                 elif 'INPUT_USER_DEACTIVATED' in error_message:
                     deactivated_users.append((username, user_id))
+                    User.delete().where(User.chat_id == user_id).execute()
                     continue
                 else:
-                    # Log or handle other exceptions
                     await client.send_message(chat_id=admin_id, text=f'Error: {e}', reply_markup=ReplyKeyboardRemove())
         
         report_parts = []
@@ -101,10 +101,12 @@ async def send_message_to_all_users(client: Client):
         
         if report_parts:
             final_report = "\n\n".join(report_parts)
-            # Split the final report into chunks of MAX_MESSAGE_LENGTH
-            for i in range(0, len(final_report), MAX_MESSAGE_LENGTH):
-                chunk = final_report[i:i + MAX_MESSAGE_LENGTH]
-                await client.send_message(chat_id=admin_id, text=chunk, reply_markup=ReplyKeyboardRemove())
+            file_path = os.path.join(os.getcwd(), 'user_report.txt')
+            with open(file_path, 'w') as f:
+                f.write(final_report)
+
+            await client.send_document(chat_id=admin_id, document=file_path, caption="Here is the report of blocked, deactivated, and invalid users.")
+            os.remove(file_path)
         else:
             await client.send_message(chat_id=admin_id, text='Message sent to users. No issues encountered.', reply_markup=ReplyKeyboardRemove())
     
