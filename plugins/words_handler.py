@@ -3,7 +3,7 @@ from pyrogram.types import Message, CallbackQuery
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 from pyrogram.types import InlineQuery, InlineQueryResultArticle, InputTextMessageContent
 from filters.join_checker_filter import is_user_joined
-from models.words import WordBook
+from models.words import SayadGanj
 from peewee import DoesNotExist
 from constants.bot_messages import PLEASE_CHOOSE_ONE, WORD_NOT_FOUND, INLINE_RESULT_NOT_FOUND_TITLE, INLINE_RESULT_NOT_FOUND_DESC, INLINE_RESULT_INPUT_MSG_CONTENT
 from main import config
@@ -27,7 +27,7 @@ async def search_word_handler(client: Client, message: Message):
         if len(results) < 1:
             await message.reply_text("No results found.")
         elif len(results) == 1:
-            cleaned_translation = remove_first_line(results[0].entry)
+            cleaned_translation = results[0].definition
             if len(cleaned_translation) > 4096:
                 chunks = chunck_text(cleaned_translation)
                 for chunk in chunks[1:]:
@@ -37,18 +37,18 @@ async def search_word_handler(client: Client, message: Message):
         else:
             buttons = []
             for result in results:
-                cleaned_translation = remove_first_line(result.entry)
+                cleaned_translation = result.definition      
                 splited_text = cleaned_translation.split(':')
 
                 if splited_text[0].startswith('\n'):
                     text_to_display = splited_text[0].split('\n')[1].strip()
                 elif splited_text[0].startswith('<h'):
-                    text_to_display = remove_first_line(splited_text[0])
+                    text_to_display = splited_text[0]
                 else:
                     text_to_display = splited_text[0]
 
                 buttons.append(
-                    [InlineKeyboardButton(text=text_to_display, callback_data=f"result_{result._id}")]
+                    [InlineKeyboardButton(text=text_to_display, callback_data=f"result_{result.id}")]
                 )
             reply_markup = InlineKeyboardMarkup(buttons)
             await client.send_message(
@@ -75,9 +75,9 @@ async def callback_handler(client: Client, query: CallbackQuery):
     if query.data.startswith("result_"):
         result_id = int(query.data.split("_")[1])
         try:
-            selected_result = WordBook.select().where(
-                WordBook._id == result_id,).get()
-            full_text = remove_first_line(selected_result.entry)
+            selected_result = SayadGanj.select().where(
+                SayadGanj.id == result_id,).get()
+            full_text = selected_result.definition
 
             if len(full_text) > 4096:
                 chunks = chunck_text(full_text)
@@ -134,7 +134,7 @@ async def inline_query_handler(client: Client, inline_query: InlineQuery):
     if results:
         total_length = 0
         for result in results:
-            cleaned_translation = remove_first_line(result.entry)
+            cleaned_translation = result.definition
             splited_text = cleaned_translation.split(':', 1)
             cleaned_title = splited_text[0].strip()[:MAX_TITLE_LENGTH]
             cleaned_desc = f'{cleaned_title}:\n{splited_text[1].strip()}'
@@ -146,7 +146,7 @@ async def inline_query_handler(client: Client, inline_query: InlineQuery):
 
             input_content = InputTextMessageContent(cleaned_desc)
             inline_result = InlineQueryResultArticle(
-                id=str(result._id),
+                id=str(result.id),
                 title=cleaned_title,
                 description=cleaned_desc,
                 input_message_content=input_content
@@ -176,9 +176,9 @@ async def inline_query_handler(client: Client, inline_query: InlineQuery):
     
 async def search_word(word_to_trans):
     try:
-        results = WordBook.select().where(
-            WordBook.langFullWord == word_to_trans
-        )
+        results = SayadGanj.select().where(
+            (SayadGanj.full_word == word_to_trans) | (SayadGanj.full_word_with_symbols == word_to_trans)
+        ).execute()
         return results
     except DoesNotExist:
         return None
@@ -186,18 +186,15 @@ async def search_word(word_to_trans):
 async def inline_search_word(word_to_trans):
     try:
         query_pattern = f"%{word_to_trans}%"
-        results = (WordBook
+        results = (SayadGanj
                    .select()
-                   .where((WordBook.langFullWord == word_to_trans) | 
-                          (WordBook.langFullWord.contains(word_to_trans)))
+                   .where((SayadGanj.full_word == word_to_trans) | 
+                          (SayadGanj.full_word.contains(word_to_trans)))
                    .limit(MAX_RESULTS)
                    .execute())
         return results
     except DoesNotExist:
         return None
-
-def remove_first_line(text):
-    return '\n'.join(text.split('\n')[1:]) if '\n' in text else text
 
 def chunck_text(full_text):
     chunks = [full_text[i:i + 4096] for i in range(0, len(full_text), 4096)]
