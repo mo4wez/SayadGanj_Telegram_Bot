@@ -64,7 +64,7 @@ This is a Telegram bot developed using Pyrogram and SQLite to provide a Balochi 
     ```
 6. **Main Database:**
 
-   You will need a database named wordbook.db for searching words.
+   You will need a database named sayadganj.db for searching words.
    
 7. **Run the bot:**
 
