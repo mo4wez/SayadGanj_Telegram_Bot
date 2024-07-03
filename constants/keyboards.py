@@ -1,5 +1,5 @@
-from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup, ReplyKeyboardMarkup, KeyboardButton
-from constants.bot_messages import SUB_CHANNEL_NAME, SUB_CHANNEL_LINK, INLINE_SEARCH_TITLE
+from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup, ReplyKeyboardMarkup, KeyboardButton, WebAppInfo
+from constants.bot_messages import SUB_CHANNEL_NAME, SUB_CHANNEL_LINK, INLINE_SEARCH_TITLE, SAYADGANJ_WEBSITE_LINK, SAYADGANJ_WEBSITE_TITLE
 from constants.bot_messages import (
     BOT_USERS,
     SEND_PUBLIC_MESSAGE,
@@ -23,9 +23,15 @@ JOIN_TO_CHANNEL_KEYBOARD = InlineKeyboardMarkup(
 # Inline keyboard button
 INLINE_SEARCH_BUTTON = InlineKeyboardMarkup(
     [
-        [InlineKeyboardButton(INLINE_SEARCH_TITLE, switch_inline_query="")],
+        [InlineKeyboardButton(INLINE_SEARCH_TITLE, switch_inline_query="")]
     ]
     )
+
+SAYADGANJ_WEBAPP_BUTTON = InlineKeyboardMarkup(
+    [
+        [InlineKeyboardButton(SAYADGANJ_WEBSITE_TITLE, web_app=WebAppInfo(url=SAYADGANJ_WEBSITE_LINK))]
+    ]
+)
 
 CANCEL_KEYBOARD = ReplyKeyboardMarkup(
     [

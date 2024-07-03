@@ -4,7 +4,7 @@ from pyrogram.types import Message, CallbackQuery
 from filters.join_checker_filter import is_user_joined
 from models.users import User
 from constants.bot_messages import WELCOME_MESSAGE, INLINE_SEARCH_BODY, DONATION_MESSAGE, TUTORIAL_VIDEO_FORWARD_FAILED
-from constants.keyboards import INLINE_SEARCH_BUTTON
+from constants.keyboards import INLINE_SEARCH_BUTTON, SAYADGANJ_WEBAPP_BUTTON
 from main import config
 
 # Set up logging
@@ -33,7 +33,7 @@ async def start(client: Client, message: Message):
             first_name=first_name,
             username=username,
         )
-    await message.reply_text(WELCOME_MESSAGE)
+    await message.reply_text(WELCOME_MESSAGE, reply_markup=SAYADGANJ_WEBAPP_BUTTON)
 
 @Client.on_message(filters.command('search'))
 async def search(client: Client, message: Message):

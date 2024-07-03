@@ -69,3 +69,6 @@ TUTORIAL_VIDEO_FORWARD_FAILED = '''
 ❗️
 مشکلے پیش اتک ءُ ویڈو دیم دیگ نہ بوت، دلیل ءَ چہ ربوٹ ءِ ادمین ءَ جست گر۔
 '''
+
+SAYADGANJ_WEBSITE_LINK = 'https://sayadganj.online/'
+SAYADGANJ_WEBSITE_TITLE = 'سیدگنج ءِ وبسایت'
