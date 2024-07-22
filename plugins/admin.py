@@ -14,13 +14,32 @@ from constants.bot_messages import (
     TOTAL_USERS,
     SEND_YOUR_MESSAGE,
     SEND_USER_ID,
+    PRIVATE_MESSAGE_SENT,
+    PUBLIC_MESSAGE_SENT,
+    SEND_POST_MESSAGE,
     NOW_SEND_YOUR_MESSAGE,
+    SEND_ONLY_TEXT,
+    SEND_POST_LINK_TEXT,
+    WRONG_USER_ID,
+    INVALID_POST_LINK,
+    NOTIF_SENT_PLACE_TEXT,
+    TO_USERS_TEXT,
+    TO_CHANNEL_TEXT,
+    NO_USERS_TEXT,
+    TAKBAND_QANDEEL,
+    MESSAGE_SENT_TO_CHANNEL_TEXT,
+    INVALID_SELECTION_TEXT,
+    ENTER_ID_INTEGER_ERROR,
+    REPORT_FILE_CAPTION,
     EXIT_BUTTON_DATA,
     EXITED_FROM_ADMIN,
     CANCEL,
     OPERATION_CANCELED,
     NEW_POST_CALLBACK_TEXT,
     VIEW_POST_KEYBOARD_TEXT,
+    PEER_ID_INVALID,
+    USER_IS_BLOCKED,
+    INPUT_USER_DEACTIVATED,
     )
 
 admin_id = int(config.admin_id)
@@ -73,15 +92,15 @@ async def send_message_to_all_users(client: Client):
                 await asyncio.sleep(0.2)
             except Exception as e:
                 error_message = str(e)
-                if 'PEER_ID_INVALID' in error_message:
+                if PEER_ID_INVALID in error_message:
                     invalid_users.append((username, user_id))
                     User.delete().where(User.chat_id == user_id).execute()
                     continue
-                elif 'USER_IS_BLOCKED' in error_message:
+                elif USER_IS_BLOCKED in error_message:
                     blocked_users.append((username, user_id))
                     User.delete().where(User.chat_id == user_id).execute()
                     continue
-                elif 'INPUT_USER_DEACTIVATED' in error_message:
+                elif INPUT_USER_DEACTIVATED in error_message:
                     deactivated_users.append((username, user_id))
                     User.delete().where(User.chat_id == user_id).execute()
                     continue
@@ -105,10 +124,10 @@ async def send_message_to_all_users(client: Client):
             with open(file_path, 'w') as f:
                 f.write(final_report)
 
-            await client.send_document(chat_id=admin_id, document=file_path, caption="Here is the report of blocked, deactivated, and invalid users.")
+            await client.send_document(chat_id=admin_id, document=file_path, caption=REPORT_FILE_CAPTION, reply_markup=ReplyKeyboardRemove())
             os.remove(file_path)
         else:
-            await client.send_message(chat_id=admin_id, text='Message sent to users. No issues encountered.', reply_markup=ReplyKeyboardRemove())
+            await client.send_message(chat_id=admin_id, text=PUBLIC_MESSAGE_SENT, reply_markup=ReplyKeyboardRemove())
     
     except Exception as e:
         await client.send_message(chat_id=admin_id, text=f'Error: {e}', reply_markup=ReplyKeyboardRemove())
@@ -123,12 +142,12 @@ async def send_message_to_specific_user(client: Client):
             break
 
         if not user_id.isdigit():
-            await client.send_message(chat_id=admin_id, text="Please enter a user ID containing only digits. Try again.")
+            await client.send_message(chat_id=admin_id, text=ENTER_ID_INTEGER_ERROR)
             continue  # Restart the loop to prompt for a valid user ID
 
         user = User.get_or_none(User.chat_id == int(user_id))
         if not user:
-            await client.send_message(chat_id=admin_id, text="Wrong user ID! Please try another one.")
+            await client.send_message(chat_id=admin_id, text=WRONG_USER_ID, reply_markup=ReplyKeyboardRemove())
             continue  # Restart the loop to prompt for an existing user ID
 
         msg_input = await client.ask(chat_id=admin_id, text=NOW_SEND_YOUR_MESSAGE, reply_markup=CANCEL_KEYBOARD)
@@ -139,32 +158,32 @@ async def send_message_to_specific_user(client: Client):
             break
 
         await client.send_message(chat_id=user_id, text=msg)
-        await client.send_message(chat_id=admin_id, text='Message sent to user.', reply_markup=ReplyKeyboardRemove())
+        await client.send_message(chat_id=admin_id, text=PRIVATE_MESSAGE_SENT, reply_markup=ReplyKeyboardRemove())
         break
 
 async def send_new_post_notification(client: Client):
     while True:
-        msg = await client.ask(chat_id=admin_id, text='send your message:', reply_markup=CANCEL_KEYBOARD)
+        msg = await client.ask(chat_id=admin_id, text=SEND_POST_MESSAGE, reply_markup=CANCEL_KEYBOARD)
 
         if msg.text == CANCEL:
             await client.send_message(chat_id=admin_id, text=OPERATION_CANCELED, reply_markup=ReplyKeyboardRemove())
             return
         
         if not msg.text:
-            await client.send_message(chat_id=admin_id, text='send only text.')
+            await client.send_message(chat_id=admin_id, text=SEND_ONLY_TEXT)
             continue
         
         while True:
             reply_markup_url = await client.ask(
                 chat_id=admin_id,
-                text='Send post link:'
+                text=SEND_POST_LINK_TEXT
             )
             if reply_markup_url.text == CANCEL:
                 await client.send_message(chat_id=admin_id, text=OPERATION_CANCELED, reply_markup=ReplyKeyboardRemove())
                 return
 
             if not re.match(r'^(http|https)://', reply_markup_url.text):
-                await client.send_message(chat_id=admin_id, text="Invalid URL! Please send a valid link.", reply_markup=ReplyKeyboardRemove())
+                await client.send_message(chat_id=admin_id, text=INVALID_POST_LINK, reply_markup=ReplyKeyboardRemove())
                 continue
 
             notification_keyboard = InlineKeyboardMarkup(
@@ -175,7 +194,7 @@ async def send_new_post_notification(client: Client):
 
             post_sends_where = await client.ask(
                 chat_id=admin_id,
-                text='Where do you want to notification message should be send?',
+                text=NOTIF_SENT_PLACE_TEXT,
                 reply_markup=ADMIN_CHOOSE_WHERE_POST_SENDS_KEYBOARD
             )
 
@@ -183,7 +202,7 @@ async def send_new_post_notification(client: Client):
                 await client.send_message(chat_id=admin_id, text=OPERATION_CANCELED, reply_markup=ReplyKeyboardRemove())
                 return
             
-            if post_sends_where.text == '👥 To users':
+            if post_sends_where.text == TO_USERS_TEXT:
                 users = User.select()
                 if users:
                     for user in users:
@@ -191,17 +210,16 @@ async def send_new_post_notification(client: Client):
                         if user_id == str(admin_id):
                             continue
                         await client.send_message(chat_id=user_id, text=msg.text, reply_markup=notification_keyboard)
-                    await client.send_message(chat_id=admin_id, text='Message sent to all users.', reply_markup=ReplyKeyboardRemove())
+                    await client.send_message(chat_id=admin_id, text=PUBLIC_MESSAGE_SENT, reply_markup=ReplyKeyboardRemove())
                     break
                 else:
-                    await client.send_message(chat_id=admin_id, text='No users start the bot yet...', reply_markup=ReplyKeyboardRemove())
+                    await client.send_message(chat_id=admin_id, text=NO_USERS_TEXT, reply_markup=ReplyKeyboardRemove())
                     break
-            elif post_sends_where.text == '📢 To channel':
-                await client.send_message(chat_id='takband_kandeel', text=msg.text, reply_markup=notification_keyboard)
-                await client.send_message(chat_id=admin_id, text='Message sent to channel.', reply_markup=ReplyKeyboardRemove())
+            elif post_sends_where.text == TO_CHANNEL_TEXT:
+                await client.send_message(chat_id=TAKBAND_QANDEEL, text=msg.text, reply_markup=notification_keyboard)
+                await client.send_message(chat_id=admin_id, text=MESSAGE_SENT_TO_CHANNEL_TEXT, reply_markup=ReplyKeyboardRemove())
                 break
             else:
-                await client.send_message(chat_id=admin_id, text='Invalid selection, try again!', reply_markup=ReplyKeyboardRemove())
+                await client.send_message(chat_id=admin_id, text=INVALID_SELECTION_TEXT, reply_markup=ReplyKeyboardRemove())
                 continue
         break
-    
