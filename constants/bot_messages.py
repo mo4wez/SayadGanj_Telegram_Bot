@@ -30,24 +30,38 @@ INLINE_RESULT_INPUT_MSG_CONTENT = '''
 آسرے دست نہ کپت، وتی شوھازگال ءَ ایرت چاری بہ کن۔ پدا کوشست بہ کن پہ شوھاز ءَ۔
 '''
 
+TAKBAND_QANDEEL = 'takband_kandeel'
+
 # Admin messages
-WELCOME_ADMIN = 'Hi Admin, here you can do with buttons.'
-BOT_USERS = 'Users'
-SEND_PUBLIC_MESSAGE = 'Send public message'
-SEND_PRIVATE_MESSAGE = 'Send private message'
-PUBLIC_MESSAGE_SENT = '✅ Message sent to users.'
-PRIVATE_MESSAGE_SENT = '✅ Message sent to user.'
-TOTAL_USERS = 'Total users: {}'
-EXIT = 'Exit'
-CHANGE_SUB_CHANNEL = 'Change sub channel'
+WELCOME_ADMIN = 'دروت ادمین، گوں اے بٹناں بوٹ ءَ دست ءَ گر!'
+BOT_USERS = 'کارمرز کنونکانی کِساس'
+SEND_PUBLIC_MESSAGE = 'سرجمیں کلوہ دیم دے'
+SEND_PRIVATE_MESSAGE = 'کلوہ پہ یک مردمے'
+PUBLIC_MESSAGE_SENT = '✅ کلوہ پہ سرجمیں کارمرز کنوکاں دیم دیگ بوت'
+PRIVATE_MESSAGE_SENT = '✅ کلوہ دیم دیگ بوت'
+TOTAL_USERS = 'سرجمی {} نپر هست'
+EXIT = 'بندگ'
+REPORT_FILE_CAPTION = "اے بلاک کنوک، دلیت بوتگیں ءُ ناسرجمیں کارمرز کنوکانی رپوٹ انت۔"
+MESSAGE_SENT_TO_CHANNEL_TEXT = '✅ کلوه چینل ءَ دیم دیگ بوت'
+INVALID_SELECTION_TEXT = 'هرابیں گچین! دوبر کوشست بہ کن۔'
 
 # ask messages
-SEND_YOUR_MESSAGE = 'Send your message:'
-SEND_USER_ID = 'Send user id:'
-NOW_SEND_YOUR_MESSAGE = 'Now Send your message:'
-EXITED_FROM_ADMIN = 'exited from admin panel.'
-CANCEL = 'Cancel'
+SEND_YOUR_MESSAGE = 'وتی کلوه ءَ دیم دے:'
+SEND_USER_ID = 'آیدی ءَ دیم دے:'
+NOW_SEND_YOUR_MESSAGE = 'نوں وتی کلوہ ءَ دیم دے:'
+EXITED_FROM_ADMIN = 'ادمین پنل بند بوت'
+CANCEL = 'کنسل کنگ'
 OPERATION_CANCELED = 'Operation cancelled. \nsend /admin to see options.'
+WRONG_USER_ID = 'ھرابیں آیدی! گوں دگرے ءَ کوشست کن.'
+ENTER_ID_INTEGER_ERROR = 'آیدی باید نمبرے بہ بیت!'
+SEND_POST_MESSAGE = 'پست ءِ کلوه ءَ دیم دے:'
+SEND_ONLY_TEXT = 'باید تکست دیم بہ دے ئے!'
+SEND_POST_LINK_TEXT = 'لینک ءَ دیم دے:'
+INVALID_POST_LINK = 'لینکے کہ دیم دیگ بوتگ ھراب انت!'
+NOTIF_SENT_PLACE_TEXT = 'اے نوتیت ترا کجا دیم دیگی انت?'
+TO_USERS_TEXT = '👥 پہ ممبراں'
+TO_CHANNEL_TEXT = '📢 چینل ءَ'
+NO_USERS_TEXT = 'ممبرے دست نہ کپت!'
 
 # admin callback data text
 BOT_USERS_CD = 'bot_users'
@@ -55,8 +69,9 @@ PUBLIC_MESSAGE = 'public_message'
 PRIVATE_MESSAGE = 'private_message'
 EXIT_BUTTON_DATA = 'ex'
 NEW_POST_CALLBACK_TEXT = 'new_post'
-NEW_POST_KEYBOARD_TEXT = 'New Post'
+NEW_POST_KEYBOARD_TEXT = 'نوکیں پست'
 VIEW_POST_KEYBOARD_TEXT = 'پست ءِ چارگ'
+
 
 DONATION_MESSAGE = '''
 سیدگنج ءِ ربوٹ ءِ زندگ دارگ ءِ واستا، مالی بنیاد ءَ کمک پکار انت۔
@@ -72,3 +87,8 @@ TUTORIAL_VIDEO_FORWARD_FAILED = '''
 
 SAYADGANJ_WEBSITE_LINK = 'https://sayadganj.online/'
 SAYADGANJ_WEBSITE_TITLE = 'سیدگنج ءِ وبسایت'
+
+# Error messages
+PEER_ID_INVALID = 'PEER_ID_INVALID'
+USER_IS_BLOCKED = 'USER_IS_BLOCKED'
+INPUT_USER_DEACTIVATED = 'INPUT_USER_DEACTIVATED'
