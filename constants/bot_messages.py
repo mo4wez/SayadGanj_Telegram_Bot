@@ -62,6 +62,8 @@ NOTIF_SENT_PLACE_TEXT = 'اے نوتیت ترا کجا دیم دیگی انت?'
 TO_USERS_TEXT = '👥 پہ ممبراں'
 TO_CHANNEL_TEXT = '📢 چینل ءَ'
 NO_USERS_TEXT = 'ممبرے دست نہ کپت!'
+NEW_POST_KEYBOARD_TEXT = 'نوکیں پست'
+SEND_BUTTON_TEXT = 'بٹن ءِ نبشتہ ءَ دیم دے:'
 
 # admin callback data text
 BOT_USERS_CD = 'bot_users'
@@ -69,9 +71,6 @@ PUBLIC_MESSAGE = 'public_message'
 PRIVATE_MESSAGE = 'private_message'
 EXIT_BUTTON_DATA = 'ex'
 NEW_POST_CALLBACK_TEXT = 'new_post'
-NEW_POST_KEYBOARD_TEXT = 'نوکیں پست'
-VIEW_POST_KEYBOARD_TEXT = 'پست ءِ چارگ'
-
 
 DONATION_MESSAGE = '''
 سیدگنج ءِ ربوٹ ءِ زندگ دارگ ءِ واستا، مالی بنیاد ءَ کمک پکار انت۔

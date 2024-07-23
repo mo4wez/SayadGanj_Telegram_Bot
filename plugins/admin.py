@@ -20,6 +20,7 @@ from constants.bot_messages import (
     NOW_SEND_YOUR_MESSAGE,
     SEND_ONLY_TEXT,
     SEND_POST_LINK_TEXT,
+    SEND_BUTTON_TEXT,
     WRONG_USER_ID,
     INVALID_POST_LINK,
     NOTIF_SENT_PLACE_TEXT,
@@ -36,7 +37,6 @@ from constants.bot_messages import (
     CANCEL,
     OPERATION_CANCELED,
     NEW_POST_CALLBACK_TEXT,
-    VIEW_POST_KEYBOARD_TEXT,
     PEER_ID_INVALID,
     USER_IS_BLOCKED,
     INPUT_USER_DEACTIVATED,
@@ -186,9 +186,21 @@ async def send_new_post_notification(client: Client):
                 await client.send_message(chat_id=admin_id, text=INVALID_POST_LINK, reply_markup=ReplyKeyboardRemove())
                 continue
 
+            view_post_button_text = await client.ask(
+                chat_id=admin_id,
+                text=SEND_BUTTON_TEXT
+            )
+            if view_post_button_text.text == CANCEL:
+                await client.send_message(chat_id=admin_id, text=OPERATION_CANCELED, reply_markup=ReplyKeyboardRemove())
+                return
+
+            if not view_post_button_text.text:
+                await client.send_message(chat_id=admin_id, text=SEND_ONLY_TEXT)
+                continue
+
             notification_keyboard = InlineKeyboardMarkup(
                 [
-                    [InlineKeyboardButton(text=VIEW_POST_KEYBOARD_TEXT, url=reply_markup_url.text)]
+                    [InlineKeyboardButton(text=view_post_button_text.text, url=reply_markup_url.text)]
                 ]
                 )
 
