@@ -66,7 +66,11 @@ async def admin_callback_handler(client: Client, query: CallbackQuery):
     elif data == NEW_POST_CALLBACK_TEXT:
         await send_new_post_notification(client)
     elif data == EXIT_BUTTON_DATA:
-        await query.edit_message_text(text=EXITED_FROM_ADMIN)
+        await query.answer(text=EXITED_FROM_ADMIN, show_alert=True)
+        await client.delete_messages(
+            chat_id=admin_id,
+            message_ids=admin_message.id
+        )
         return
 
 async def send_message_to_all_users(client: Client):
