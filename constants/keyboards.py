@@ -14,13 +14,20 @@ from constants.bot_messages import (
     NEW_POST_KEYBOARD_TEXT,
     TO_USERS_TEXT,
     TO_CHANNEL_TEXT,
+    BALOCHI_KETABJAH_NAME,
+    BALOCHI_KETABJAH_LINK,
     )
 
-JOIN_TO_CHANNEL_KEYBOARD = InlineKeyboardMarkup(
-    [
-        [InlineKeyboardButton(SUB_CHANNEL_NAME, url=SUB_CHANNEL_LINK)]
-    ]
-    )
+JOIN_TO_CHANNEL_KEYBOARD_1 = InlineKeyboardButton(
+    text=SUB_CHANNEL_NAME,
+    url=SUB_CHANNEL_LINK
+)
+
+JOIN_TO_CHANNEL_KEYBOARD_2 = InlineKeyboardButton(
+    text=BALOCHI_KETABJAH_NAME,
+    url=BALOCHI_KETABJAH_LINK
+)
+
 
 # Inline keyboard button
 INLINE_SEARCH_BUTTON = InlineKeyboardMarkup(
@@ -44,7 +51,9 @@ CANCEL_KEYBOARD = ReplyKeyboardMarkup(
 
 ADMIN_OPTIONS = InlineKeyboardMarkup(
     [
-        [InlineKeyboardButton(BOT_USERS, callback_data=BOT_USERS_CD)],
+        [
+            InlineKeyboardButton(BOT_USERS, callback_data=BOT_USERS_CD),
+        ],
         [
             InlineKeyboardButton(SEND_PUBLIC_MESSAGE, callback_data=PUBLIC_MESSAGE),
             InlineKeyboardButton(SEND_PRIVATE_MESSAGE, callback_data=PRIVATE_MESSAGE)
