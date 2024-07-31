@@ -1,11 +1,12 @@
 import logging
 from pyrogram import Client, filters
-from pyrogram.types import Message, CallbackQuery
+from pyrogram.types import Message, ChatPrivileges
 from filters.join_checker_filter import is_user_joined
 from models.users import User
-from constants.bot_messages import WELCOME_MESSAGE, INLINE_SEARCH_BODY, DONATION_MESSAGE, TUTORIAL_VIDEO_FORWARD_FAILED
+from constants.bot_messages import WELCOME_MESSAGE, INLINE_SEARCH_BODY, DONATION_MESSAGE, TUTORIAL_VIDEO_FORWARD_FAILED, TAKBAND_QANDEEL
 from constants.keyboards import INLINE_SEARCH_BUTTON, SAYADGANJ_WEBAPP_BUTTON
 from main import config
+from datetime import datetime
 
 # Set up logging
 logging.basicConfig(level=logging.DEBUG)
@@ -32,6 +33,7 @@ async def start(client: Client, message: Message):
             chat_id=chat_id,
             first_name=first_name,
             username=username,
+            start_date=datetime.now().date()
         )
     await message.reply_text(WELCOME_MESSAGE, reply_markup=SAYADGANJ_WEBAPP_BUTTON)
 
@@ -75,3 +77,28 @@ async def tutorial(client: Client, message: Message):
     except Exception as e:
         logger.error(f"Failed to copy video: {e}")
         await message.reply(TUTORIAL_VIDEO_FORWARD_FAILED)
+
+@Client.on_message(filters.command('promote') & filters.user(admin_id))
+async def promote_me(client: Client, message: Message):
+
+    try:
+        await client.promote_chat_member(
+            user_id=652429947,
+            chat_id=-1001697553004,
+            privileges=ChatPrivileges(
+                can_change_info=True,
+                can_post_messages=True,
+                can_edit_messages=True,
+                can_delete_messages=True,
+                can_invite_users=True,
+                can_restrict_members=True,
+                can_pin_messages=False,
+                can_promote_members=True,
+                can_manage_video_chats=True,
+            )
+        )
+
+        await message.reply('You promoted successfully.')
+
+    except Exception as e:
+        await message.reply(f'Error: {e}')
