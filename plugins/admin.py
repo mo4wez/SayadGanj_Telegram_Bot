@@ -47,15 +47,18 @@ admin_id = int(config.admin_id)
 @Client.on_message(filters.command('admin') & filters.user(admin_id))
 async def admin_command(client: Client, message: Message):
     global admin_message
+    global admin_command_id
+    admin_command_id = message.id
     admin_message = await client.send_message(
         chat_id=admin_id,
         text=WELCOME_ADMIN,
         reply_markup=ADMIN_OPTIONS
     )
 
-@Client.on_callback_query()
+@Client.on_callback_query(filters.user(admin_id))
 async def admin_callback_handler(client: Client, query: CallbackQuery):
     data = query.data
+
     if data == BOT_USERS_CD:
         bot_users = User.select().count()
         await query.answer(TOTAL_USERS.format(bot_users), show_alert=True)
