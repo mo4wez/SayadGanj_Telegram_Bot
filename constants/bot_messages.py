@@ -8,10 +8,8 @@ PLEASE_JOIN_TO_CHANNEL = '''
 '''
 
 WELCOME_MESSAGE = 'وش آتک ئے پلیں دوست، گالے نبیس من مانا ئِـے ترا گشاں، وداریگ آں😀 \n\n❗️کیبرد ءَ بلوچی زبان ءِ سر ءَ بہ کن۔'
-SUB_CHANNEL_NAME = 'تاکبند کندیل ءِ چینل'
-SUB_CHANNEL_LINK = 'https://t.me/takband_kandeel'
-BALOCHI_KETABJAH_NAME = 'بلوچی کتابجاه ءِ چینل'
-BALOCHI_KETABJAH_LINK = 'https://t.me/thememech'
+SUB_CHANNEL_NAME = 'بلوچ بیت ءِ چینل'
+SUB_CHANNEL_LINK = 'https://t.me/balochbit'
 PLEASE_CHOOSE_ONE = '''
 تئی مکسد کجام گال بوتگ؟ ھمائی ءِ سر ءَ کلیک بکن مانا ئِـے گِند ئے:
 
@@ -32,8 +30,7 @@ INLINE_RESULT_INPUT_MSG_CONTENT = '''
 آسرے دست نہ کپت، وتی شوھازگال ءَ ایرت چاری بہ کن۔ پدا کوشست بہ کن پہ شوھاز ءَ۔
 '''
 
-TAKBAND_QANDEEL = -1001697553004
-MEME_CHANNEl = -1001140274563
+BALOCHBIT = -1001127438508
 
 # join checker filter texts
 JOINED = '✅ ھوار بوتگ ئے'
@@ -42,10 +39,6 @@ MEMEBER_STATUS_UNKNOWN = 'unknown'
 MEMBER_STATUS_LIST = ['left', 'kicked']
 FORCE_JOIN_MESSAGE = '''
 💬 سنگت، الّم بو کہ دوئیں چیر ءِ چینلاں ھوار بوتگ ئے، اگاں نہ سیدگنج ءِ بوٹ تئی پسّہ ءَ نہ دنت۔
-
-
-▫️تاکبندکندیل ءَ: {}
-▫️بلوچی کتابجاہ ءَ: {}
 
 ◀️ چیر ءِ پشت کپتگیں بٹناں بہ جن، چینلاں ھوار بو پدا بوٹ ءَ اسٹارٹ بہ کن۔
 
@@ -91,6 +84,10 @@ PUBLIC_MESSAGE = 'public_message'
 PRIVATE_MESSAGE = 'private_message'
 EXIT_BUTTON_DATA = 'ex'
 NEW_POST_CALLBACK_TEXT = 'new_post'
+
+SHOW_USERS_WORD_SEARCHES_TEXT = "Show user\'s searches"
+SHOW_SEARCHER_CALLBACK_TEXT = "show_searches"
+
 
 DONATION_MESSAGE = '''
 سیدگنج ءِ ربوٹ ءِ زندگ دارگ ءِ واستا، مالی بنیاد ءَ کمک پکار انت۔

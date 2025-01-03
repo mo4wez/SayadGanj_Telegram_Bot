@@ -14,20 +14,16 @@ from constants.bot_messages import (
     NEW_POST_KEYBOARD_TEXT,
     TO_USERS_TEXT,
     TO_CHANNEL_TEXT,
-    BALOCHI_KETABJAH_NAME,
-    BALOCHI_KETABJAH_LINK,
+    SHOW_USERS_WORD_SEARCHES_TEXT,
+    SHOW_SEARCHER_CALLBACK_TEXT
     )
 
-JOIN_TO_CHANNEL_KEYBOARD_1 = InlineKeyboardButton(
-    text=SUB_CHANNEL_NAME,
-    url=SUB_CHANNEL_LINK
-)
 
-JOIN_TO_CHANNEL_KEYBOARD_2 = InlineKeyboardButton(
-    text=BALOCHI_KETABJAH_NAME,
-    url=BALOCHI_KETABJAH_LINK
+JOIN_TO_CHANNEL_KEYBOARD_1 = InlineKeyboardMarkup(
+    [
+        [InlineKeyboardButton(text=SUB_CHANNEL_NAME, url=SUB_CHANNEL_LINK)]
+    ]
 )
-
 
 # Inline keyboard button
 INLINE_SEARCH_BUTTON = InlineKeyboardMarkup(
@@ -55,11 +51,20 @@ ADMIN_OPTIONS = InlineKeyboardMarkup(
             InlineKeyboardButton(BOT_USERS, callback_data=BOT_USERS_CD),
         ],
         [
+            InlineKeyboardButton("See bot users", callback_data="see_users"),
+        ],
+        [
             InlineKeyboardButton(SEND_PUBLIC_MESSAGE, callback_data=PUBLIC_MESSAGE),
             InlineKeyboardButton(SEND_PRIVATE_MESSAGE, callback_data=PRIVATE_MESSAGE)
         ],
         [
             InlineKeyboardButton(NEW_POST_KEYBOARD_TEXT, callback_data=NEW_POST_CALLBACK_TEXT)
+        ],
+        [
+            InlineKeyboardButton(SHOW_USERS_WORD_SEARCHES_TEXT, callback_data=SHOW_SEARCHER_CALLBACK_TEXT)
+        ],
+        [
+            InlineKeyboardButton("Delete searches for a user", callback_data="delete_user_searches")
         ],
         [InlineKeyboardButton(EXIT, callback_data=EXIT_BUTTON_DATA)]
     ]
