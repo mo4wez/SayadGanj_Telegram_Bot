@@ -1,9 +1,10 @@
 import logging
+import jdatetime
 from pyrogram import Client, filters
 from pyrogram.types import Message, ChatPrivileges
 from filters.join_checker_filter import is_user_joined
 from models.users import User
-from constants.bot_messages import WELCOME_MESSAGE, INLINE_SEARCH_BODY, DONATION_MESSAGE, TUTORIAL_VIDEO_FORWARD_FAILED, TAKBAND_QANDEEL
+from constants.bot_messages import WELCOME_MESSAGE, INLINE_SEARCH_BODY, TUTORIAL_VIDEO_FORWARD_FAILED, BALOCHBIT
 from constants.keyboards import INLINE_SEARCH_BUTTON, SAYADGANJ_WEBAPP_BUTTON
 from main import config
 from datetime import datetime
@@ -24,16 +25,20 @@ async def start(client: Client, message: Message):
         return
 
     user = User.get_or_none(User.chat_id == chat_id)
+    jalaali_date = jdatetime.datetime.now().strftime("%Y/%m/%d")
+
     if user:
         user.first_name = first_name
         user.username = username
+        if not user.start_date:
+            user.start_date = jalaali_date
         user.save()
     else:
         User.create(
             chat_id=chat_id,
             first_name=first_name,
             username=username,
-            start_date=datetime.now().date()
+            start_date=jalaali_date
         )
     await message.reply_text(WELCOME_MESSAGE, reply_markup=SAYADGANJ_WEBAPP_BUTTON)
 
@@ -49,15 +54,6 @@ async def search(client: Client, message: Message):
         text=INLINE_SEARCH_BODY,
         reply_markup=INLINE_SEARCH_BUTTON
     )
-
-@Client.on_message(filters.command('donate'))
-async def donate(client: Client, message: Message):
-    
-    if not await is_user_joined(None, client, message):
-        return
-    
-    await message.reply_text(DONATION_MESSAGE)
-
 
 @Client.on_message(filters.command('tutorial'))
 async def tutorial(client: Client, message: Message):
@@ -80,11 +76,10 @@ async def tutorial(client: Client, message: Message):
 
 @Client.on_message(filters.command('promote') & filters.user(admin_id))
 async def promote_me(client: Client, message: Message):
-
     try:
         await client.promote_chat_member(
-            user_id=652429947,
-            chat_id=-1001697553004,
+            user_id=admin_id,
+            chat_id=BALOCHBIT,
             privileges=ChatPrivileges(
                 can_change_info=True,
                 can_post_messages=True,

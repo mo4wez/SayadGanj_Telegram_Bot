@@ -7,6 +7,7 @@ from models.words import SayadGanj
 from peewee import DoesNotExist
 from constants.bot_messages import PLEASE_CHOOSE_ONE, WORD_NOT_FOUND, INLINE_RESULT_NOT_FOUND_TITLE, INLINE_RESULT_NOT_FOUND_DESC, INLINE_RESULT_INPUT_MSG_CONTENT
 from main import config
+from models.users import save_search
 
 import logging
 
@@ -22,7 +23,12 @@ async def search_word_handler(client: Client, message: Message):
         return
 
     balochi_word = message.text
+
+    # Save the search term to the database
+    save_search(chat_id=message.chat.id, search_term=balochi_word)
+
     results = await search_word(balochi_word)
+
     if results:
         if len(results) < 1:
             await message.reply_text("No results found.")
