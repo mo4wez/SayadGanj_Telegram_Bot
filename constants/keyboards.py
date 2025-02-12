@@ -24,7 +24,7 @@ from constants.bot_messages import (
     )
 
 
-JOIN_TO_CHANNEL_KEYBOARD_1 = InlineKeyboardMarkup(
+JOIN_TO_CHANNEL_KEYBOARD = InlineKeyboardMarkup(
     [
         [InlineKeyboardButton(text=SUB_CHANNEL_NAME, url=SUB_CHANNEL_LINK)]
     ]

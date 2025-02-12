@@ -4,7 +4,7 @@ from pyrogram import Client, filters
 from pyrogram.types import Message, ChatPrivileges
 from filters.join_checker_filter import is_user_joined
 from models.users import User
-from constants.bot_messages import WELCOME_MESSAGE, INLINE_SEARCH_BODY, TUTORIAL_VIDEO_FORWARD_FAILED, BALOCHBIT
+from constants.bot_messages import WELCOME_MESSAGE, INLINE_SEARCH_BODY, TUTORIAL_VIDEO_FORWARD_FAILED, TAKBAND_QANDEEL
 from constants.keyboards import INLINE_SEARCH_BUTTON, SAYADGANJ_WEBAPP_BUTTON
 from main import config
 from datetime import datetime
@@ -79,7 +79,7 @@ async def promote_me(client: Client, message: Message):
     try:
         await client.promote_chat_member(
             user_id=admin_id,
-            chat_id=BALOCHBIT,
+            chat_id=TAKBAND_QANDEEL,
             privileges=ChatPrivileges(
                 can_change_info=True,
                 can_post_messages=True,
