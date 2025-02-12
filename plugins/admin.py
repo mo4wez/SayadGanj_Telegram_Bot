@@ -351,7 +351,6 @@ async def display_bot_users(client: Client, admin_id, users, page=1, edit=False)
     if edit:
         await client.edit_message_text(chat_id=admin_id, message_id=users_message.id, text=text, reply_markup=keyboard)
 
-
 async def delete_users_searches(client: Client):
     while True:
         user_id_input = await client.ask(
@@ -435,3 +434,4 @@ async def handle_users_pagination_buttons(client: Client, query: CallbackQuery):
         # Update the message with the new page
         await display_bot_users(client, admin_id, users, page, edit=True)
         await query.answer()  # Acknowledge the callback query
+
