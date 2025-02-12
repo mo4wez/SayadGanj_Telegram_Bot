@@ -8,8 +8,8 @@ PLEASE_JOIN_TO_CHANNEL = '''
 '''
 
 WELCOME_MESSAGE = 'وش آتک ئے پلیں دوست، گالے نبیس من مانا ئِـے ترا گشاں، وداریگ آں😀 \n\n❗️کیبرد ءَ بلوچی زبان ءِ سر ءَ بہ کن۔'
-SUB_CHANNEL_NAME = 'بلوچ بیت ءِ چینل'
-SUB_CHANNEL_LINK = 'https://t.me/balochbit'
+SUB_CHANNEL_NAME = 'تاکبند کندیل ءِ چینل'
+SUB_CHANNEL_LINK = 'https://t.me/takband_kandeel'
 PLEASE_CHOOSE_ONE = '''
 تئی مکسد کجام گال بوتگ؟ ھمائی ءِ سر ءَ کلیک بکن مانا ئِـے گِند ئے:
 
@@ -30,20 +30,13 @@ INLINE_RESULT_INPUT_MSG_CONTENT = '''
 آسرے دست نہ کپت، وتی شوھازگال ءَ ایرت چاری بہ کن۔ پدا کوشست بہ کن پہ شوھاز ءَ۔
 '''
 
-BALOCHBIT = -1001127438508
+TAKBAND_QANDEEL = -1001697553004
 
 # join checker filter texts
 JOINED = '✅ ھوار بوتگ ئے'
 NOT_JOINED = '❌ هوار نہ بوتگ ئے'
 MEMEBER_STATUS_UNKNOWN = 'unknown'
 MEMBER_STATUS_LIST = ['left', 'kicked']
-FORCE_JOIN_MESSAGE = '''
-💬 سنگت، الّم بو کہ دوئیں چیر ءِ چینلاں ھوار بوتگ ئے، اگاں نہ سیدگنج ءِ بوٹ تئی پسّہ ءَ نہ دنت۔
-
-◀️ چیر ءِ پشت کپتگیں بٹناں بہ جن، چینلاں ھوار بو پدا بوٹ ءَ اسٹارٹ بہ کن۔
-
-/start
-'''
 
 # Admin messages
 WELCOME_ADMIN = 'دروت ادمین، گوں اے بٹناں بوٹ ءَ دست ءَ گر!'
@@ -85,16 +78,20 @@ PRIVATE_MESSAGE = 'private_message'
 EXIT_BUTTON_DATA = 'ex'
 NEW_POST_CALLBACK_TEXT = 'new_post'
 
-SHOW_USERS_WORD_SEARCHES_TEXT = "Show user\'s searches"
+SHOW_USERS_WORD_SEARCHES_TEXT = "یوزرانی شوهاز کتگین گال"
 SHOW_SEARCHER_CALLBACK_TEXT = "show_searches"
+SEE_BOT_USERS_BUTTON_TEXT = "کارمرز کنوکانی لیست"
+SEE_BOT_USERS_CD = "see_users"
+DELETE_USER_SEARCHES_BUTTON_TEXT = "یوزر ءِ سرچان گار کن"
+DELETE_USER_SEARCHES_CD = "delete_user_searches"
 
+NO_SEARCHES_HISTORY_TEXT = "No search history found for this user."
 
-DONATION_MESSAGE = '''
-سیدگنج ءِ ربوٹ ءِ زندگ دارگ ءِ واستا، مالی بنیاد ءَ کمک پکار انت۔
-آیوکی روچاں پہ شما ڈسے ایر کنگ بیت کہ اگاں شمارا دوست بوت، توان اِت کمک بہ کن ات۔
+PREVIOUS_PAGE = "⬅️ Previous"
+NEXT_PAGE = "Next ➡️"
 
-منتوار
-'''
+USER_NOT_FOUND = "کارمرز کنوک ودی نبوت!"
+NO_SEARCHES_FOUND = "No searches found!"
 
 TUTORIAL_VIDEO_FORWARD_FAILED = '''
 ❗️

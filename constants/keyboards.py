@@ -15,7 +15,12 @@ from constants.bot_messages import (
     TO_USERS_TEXT,
     TO_CHANNEL_TEXT,
     SHOW_USERS_WORD_SEARCHES_TEXT,
-    SHOW_SEARCHER_CALLBACK_TEXT
+    SHOW_SEARCHER_CALLBACK_TEXT,
+    SEE_BOT_USERS_BUTTON_TEXT,
+    SEE_BOT_USERS_CD,
+    DELETE_USER_SEARCHES_BUTTON_TEXT,
+    DELETE_USER_SEARCHES_CD,
+    
     )
 
 
@@ -51,7 +56,7 @@ ADMIN_OPTIONS = InlineKeyboardMarkup(
             InlineKeyboardButton(BOT_USERS, callback_data=BOT_USERS_CD),
         ],
         [
-            InlineKeyboardButton("See bot users", callback_data="see_users"),
+            InlineKeyboardButton(SEE_BOT_USERS_BUTTON_TEXT, callback_data=SEE_BOT_USERS_CD),
         ],
         [
             InlineKeyboardButton(SEND_PUBLIC_MESSAGE, callback_data=PUBLIC_MESSAGE),
@@ -64,7 +69,7 @@ ADMIN_OPTIONS = InlineKeyboardMarkup(
             InlineKeyboardButton(SHOW_USERS_WORD_SEARCHES_TEXT, callback_data=SHOW_SEARCHER_CALLBACK_TEXT)
         ],
         [
-            InlineKeyboardButton("Delete searches for a user", callback_data="delete_user_searches")
+            InlineKeyboardButton(DELETE_USER_SEARCHES_BUTTON_TEXT, callback_data=DELETE_USER_SEARCHES_CD)
         ],
         [InlineKeyboardButton(EXIT, callback_data=EXIT_BUTTON_DATA)]
     ]

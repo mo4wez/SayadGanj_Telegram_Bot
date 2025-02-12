@@ -7,42 +7,7 @@ from main import config
 from constants.keyboards import ADMIN_OPTIONS, CANCEL_KEYBOARD, ADMIN_CHOOSE_WHERE_POST_SENDS_KEYBOARD
 from models.users import User, SearchHistory
 from peewee import fn
-from constants.bot_messages import (
-    WELCOME_ADMIN,
-    PUBLIC_MESSAGE,
-    PRIVATE_MESSAGE,
-    BOT_USERS_CD,
-    TOTAL_USERS,
-    SEND_YOUR_MESSAGE,
-    SEND_USER_ID,
-    PRIVATE_MESSAGE_SENT,
-    PUBLIC_MESSAGE_SENT,
-    SEND_POST_MESSAGE,
-    NOW_SEND_YOUR_MESSAGE,
-    SEND_ONLY_TEXT,
-    SEND_POST_LINK_TEXT,
-    SEND_BUTTON_TEXT,
-    WRONG_USER_ID,
-    INVALID_POST_LINK,
-    NOTIF_SENT_PLACE_TEXT,
-    TO_USERS_TEXT,
-    TO_CHANNEL_TEXT,
-    NO_USERS_TEXT,
-    BALOCHBIT,
-    MESSAGE_SENT_TO_CHANNEL_TEXT,
-    INVALID_SELECTION_TEXT,
-    ENTER_ID_INTEGER_ERROR,
-    REPORT_FILE_CAPTION,
-    EXIT_BUTTON_DATA,
-    EXITED_FROM_ADMIN,
-    CANCEL,
-    OPERATION_CANCELED,
-    NEW_POST_CALLBACK_TEXT,
-    PEER_ID_INVALID,
-    USER_IS_BLOCKED,
-    INPUT_USER_DEACTIVATED,
-    SHOW_SEARCHER_CALLBACK_TEXT,
-    )
+from constants.bot_messages import *
 
 SEARCHES_PER_PAGE = 10
 
@@ -67,7 +32,7 @@ async def admin_callback_handler(client: Client, query: CallbackQuery):
     if data == BOT_USERS_CD:
         bot_users = User.select().count()
         await query.answer(TOTAL_USERS.format(bot_users), show_alert=True)
-    elif data == "see_users":
+    elif data == SEE_BOT_USERS_CD:
         await show_bot_users(client)
     elif data == PUBLIC_MESSAGE:
         await send_message_to_all_users(client)
@@ -77,7 +42,7 @@ async def admin_callback_handler(client: Client, query: CallbackQuery):
         await send_new_post_notification(client)
     elif data == SHOW_SEARCHER_CALLBACK_TEXT:
         await show_users_searches(client)
-    elif data == 'delete_user_searches':
+    elif data == DELETE_USER_SEARCHES_CD:
         await delete_users_searches(client)
     elif data == EXIT_BUTTON_DATA:
         await query.answer(text=EXITED_FROM_ADMIN, show_alert=True)
@@ -251,7 +216,7 @@ async def send_new_post_notification(client: Client):
                     await client.send_message(chat_id=admin_id, text=NO_USERS_TEXT, reply_markup=ReplyKeyboardRemove())
                     break
             elif post_sends_where.text == TO_CHANNEL_TEXT:
-                await client.send_message(chat_id=BALOCHBIT, text=msg.text, reply_markup=notification_keyboard)
+                await client.send_message(chat_id=TAKBAND_QANDEEL, text=msg.text, reply_markup=notification_keyboard)
                 await client.send_message(chat_id=admin_id, text=MESSAGE_SENT_TO_CHANNEL_TEXT, reply_markup=ReplyKeyboardRemove())
                 break
             else:
@@ -283,7 +248,7 @@ async def show_users_searches(client: Client):
         user_searches = SearchHistory.select().where(SearchHistory.user == user).order_by(SearchHistory.search_date.desc())
 
         if not user_searches.exists():
-            await client.send_message(chat_id=admin_id, text="No search history found for this user.", reply_markup=ReplyKeyboardRemove())
+            await client.send_message(chat_id=admin_id, text=NO_SEARCHES_HISTORY_TEXT, reply_markup=ReplyKeyboardRemove())
             continue
 
         # Display the first page of results
@@ -308,9 +273,9 @@ async def display_searches_page(client, chat_id, user, searches, page, edit=Fals
     # Pagination buttons
     buttons = []
     if page > 1:
-        buttons.append(InlineKeyboardButton("⬅️ Previous", callback_data=f"searches_prev_{page - 1}_{user.chat_id}"))
+        buttons.append(InlineKeyboardButton(PREVIOUS_PAGE, callback_data=f"searches_prev_{page - 1}_{user.chat_id}"))
     if page < total_pages:
-        buttons.append(InlineKeyboardButton("Next ➡️", callback_data=f"searches_next_{page + 1}_{user.chat_id}"))
+        buttons.append(InlineKeyboardButton(NEXT_PAGE, callback_data=f"searches_next_{page + 1}_{user.chat_id}"))
 
     keyboard = InlineKeyboardMarkup([buttons]) if buttons else None
     
@@ -339,9 +304,9 @@ async def display_bot_users(client: Client, admin_id, users, page=1, edit=False)
     # Pagination buttons
     buttons = []
     if page > 1:
-        buttons.append(InlineKeyboardButton("⬅️ Previous", callback_data=f"users_prev_{page - 1}"))
+        buttons.append(InlineKeyboardButton(PREVIOUS_PAGE, callback_data=f"users_prev_{page - 1}"))
     if page < total_pages:
-        buttons.append(InlineKeyboardButton("Next ➡️", callback_data=f"users_next_{page + 1}"))
+        buttons.append(InlineKeyboardButton(NEXT_PAGE, callback_data=f"users_next_{page + 1}"))
 
     keyboard = InlineKeyboardMarkup([buttons]) if buttons else None
     
@@ -409,12 +374,12 @@ async def handle_pagination_buttons(client: Client, query: CallbackQuery):
         admin_id = query.message.chat.id  # Assuming the admin is using the bot
         user = User.get_or_none(User.chat_id == user_id)
         if not user:
-            await query.answer("User not found!", show_alert=True)
+            await query.answer(USER_NOT_FOUND, show_alert=True)
             return
 
         searches = SearchHistory.select().where(SearchHistory.user == user).order_by(SearchHistory.search_date.desc())
         if not searches.exists():
-            await query.answer("No searches found!", show_alert=True)
+            await query.answer(NO_SEARCHES_FOUND, show_alert=True)
             return
 
         # Update the message with the new page
