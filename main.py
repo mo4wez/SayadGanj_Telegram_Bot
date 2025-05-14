@@ -36,4 +36,6 @@ bot = Client(
 
 if __name__ == '__main__':
     logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
+    from plugins.word_of_day import start_scheduler
+    start_scheduler(bot)
     bot.run()
