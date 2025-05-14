@@ -1,13 +1,17 @@
 import jdatetime
-from peewee import Model, SqliteDatabase, CharField, OperationalError, ForeignKeyField, TextField
+from peewee import Model, SqliteDatabase, CharField, ForeignKeyField, TextField
+import os
 
-db = SqliteDatabase(r'C:\Users\moawe\Desktop\sayadganj_bot\db\users.db')
+# Use a relative path based on the current file's location
+current_dir = os.path.dirname(os.path.abspath(__file__))
+db_path = os.path.join(os.path.dirname(current_dir), 'users.db')
+db = SqliteDatabase(db_path)
 
 class User(Model):
     chat_id = CharField(unique=True)
     first_name = CharField()
     username = CharField(null=True)
-    start_date = CharField()
+    start_date = CharField()  # Already included in the model definition
 
     class Meta:
         database = db
@@ -26,17 +30,11 @@ def save_search(chat_id, search_term):
     search_date = jdatetime.datetime.now().strftime("%Y/%m/%d")
     SearchHistory.create(user=user, search_term=search_term, search_date=search_date)
 
-def add_start_date_column():
-    # Raw SQL to add the new column if it doesn't exist
-    try:
-        db.execute_sql('ALTER TABLE user ADD COLUMN start_date DATE')
-    except OperationalError as e:
-        if "duplicate column name: start_date" in str(e):
-            # The column already exists, ignore the error
-            pass
-        else:
-            raise e
-        
+# Remove the add_start_date_column function since start_date is already in the model
+# and we're creating the tables from scratch
+
+# Connect to the database
 db.connect()
-add_start_date_column()
+
+# Create tables if they don't exist
 db.create_tables([User, SearchHistory], safe=True)
