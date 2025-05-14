@@ -19,7 +19,7 @@ PLEASE_CHOOSE_ONE = '''
 👇
 '''
 WORD_NOT_FOUND = 'پہ "{}" ءَ ھچ ھمدپیں گالے دست نہ کپت۔'
-INLINE_SEARCH_TITLE = 'شوهاز'
+INLINE_SEARCH_TITLE = 'شوهاز 🔎'
 INLINE_SEARCH_BODY = '''
 چیر ءِ بٹن ءِ جنگ ءَ گوں، سنگتانی pv ءَ یا کہ گروپے ءَ گچین کن ءُ اود ءَ گال ءَ بہ شوھاز۔
 
@@ -32,7 +32,6 @@ INLINE_RESULT_NOT_FOUND_DESC = 'پہ "{}" ءَ ھچ ھمدپیں آسرے دست
 INLINE_RESULT_INPUT_MSG_CONTENT = '''
 آسرے دست نہ کپت، وتی شوھازگال ءَ ایرت چاری بہ کن۔ پدا کوشست بہ کن پہ شوھاز ءَ۔
 '''
-
 TAKBAND_QANDEEL = -1001697553004
 
 # join checker filter texts
@@ -46,14 +45,16 @@ WELCOME_ADMIN = """
 ◀️ سیدگنج ءِ ادمین پنل
 
 دروت ادمین، گوں چیر ءِ بٹناں سیدگنج ءِ ربات ءِ کاربوجاں دست ءَ گر۔
+
+👇
 """
-BOT_USERS = 'کارمرز کنونکانی کِساس'
+BOT_USERS = 'کارمرز کنونکانی کِساس 〽️'
 SEND_PUBLIC_MESSAGE = 'سرجمیں کلوہ دیم دے'
 SEND_PRIVATE_MESSAGE = 'کلوہ پہ یک مردمے'
 PUBLIC_MESSAGE_SENT = '✅ کلوہ پہ سرجمیں کارمرز کنوکاں دیم دیگ بوت'
 PRIVATE_MESSAGE_SENT = '✅ کلوہ دیم دیگ بوت'
 TOTAL_USERS = 'سرجمی {} نپر هست'
-EXIT = 'بندگ'
+EXIT = 'بندگ ❌'
 REPORT_FILE_CAPTION = "اے بلاک کنوک، دلیت بوتگیں ءُ ناسرجمیں کارمرز کنوکانی رپوٹ انت۔"
 MESSAGE_SENT_TO_CHANNEL_TEXT = '✅ کلوه چینل ءَ دیم دیگ بوت'
 INVALID_SELECTION_TEXT = 'هرابیں گچین! دوبر کوشست بہ کن۔'
@@ -86,7 +87,7 @@ NOTIF_SENT_PLACE_TEXT = 'اے نوتیف ترا کجا دیم دیگی انت؟'
 TO_USERS_TEXT = '👥 پہ ممبراں'
 TO_CHANNEL_TEXT = '📢 چینل ءَ'
 NO_USERS_TEXT = 'ممبرے دست نہ کپت!'
-NEW_POST_KEYBOARD_TEXT = 'نوکیں پست'
+NEW_POST_KEYBOARD_TEXT = '🆕 نوکیں پست'
 SEND_BUTTON_TEXT = 'بٹن ءِ نبشتہ ءَ دیم دے:'
 WORD_OF_DAY_SETTINGS = "روچ گال ءِ کاربوج ⚙️"
 MANUALLY_SEND_WORD_OF_DAY = "روچ گال ءَ دستی دیم دے 📤"
@@ -200,10 +201,10 @@ PLEASE_SEND_CHANNEL_INFO = """
 `-1001234567890|My Channel|https://t.me/mychannel`
 """
 # No channels to remove.
-NO_CHANNEL_TO_REMOVE = "چینلے پہ گار کنگ دست نہ کپت۔"
-BACK_CHANNEL_SETTINGS = "واترگ"
+NO_CHANNEL_TO_REMOVE = "چینلے پہ گار کنگ دست نہ کپت۔ ⚠️"
+BACK_CHANNEL_SETTINGS = "واترگ 🔙"
 # Select a channel to remove
-SELECT_CHANNEL_TO_REMOVE = "چینلے پہ گار کنگ ءَ گچین کن"
+SELECT_CHANNEL_TO_REMOVE = "چینلے پہ گار کنگ ءَ گچین کن 🚮\n\n👇"
 CHANNEL_X_REMOVED = "چینل {} گار کنگ بوت."
 # Channel x already exists in required channels!
 CHANNEL_X_ALREADY_EXISTS = "چینل {} پیسر ءَ هوار کنگ بوتگ."
