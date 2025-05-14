@@ -2,14 +2,16 @@ from pyrogram import Client, filters
 from pyrogram.types import Message, CallbackQuery
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 from pyrogram.types import InlineQuery, InlineQueryResultArticle, InputTextMessageContent
-from filters.join_checker_filter import is_user_joined
 from models.words import SayadGanj
 from peewee import DoesNotExist
 from constants.bot_messages import PLEASE_CHOOSE_ONE, WORD_NOT_FOUND, INLINE_RESULT_NOT_FOUND_TITLE, INLINE_RESULT_NOT_FOUND_DESC, INLINE_RESULT_INPUT_MSG_CONTENT
 from main import config
 from models.users import save_search
-
+from filters.join_checker_filter import is_joined_filter
+import re
 import logging
+from utils.state_manager import is_user_in_state, get_user_state
+from plugins.admin import is_admin
 
 # Set up logging
 logging.basicConfig(level=logging.DEBUG)
@@ -17,25 +19,60 @@ logger = logging.getLogger(__name__)
 
 admin_id = int(config.admin_id)
 
-@Client.on_message((~filters.via_bot & ~filters.regex(r"^\/") & filters.text & filters.private))
+# Import user_states from word_of_day.py to check if admin is setting time
+try:
+    from plugins.word_of_day import user_states
+except ImportError:
+    # If import fails, create an empty dictionary
+    user_states = {}
+
+@Client.on_message(filters.text & filters.private & ~filters.via_bot & ~filters.regex(r"^\/") & is_joined_filter, group=10)
 async def search_word_handler(client: Client, message: Message):
-    if not await is_user_joined(None, client, message):
-        return
-
+    # Skip processing if the user is in any special state
+    user_id = message.from_user.id
+    
+    # Check if user is in any state that should prevent search
+    if is_user_in_state(user_id):
+        state = get_user_state(user_id)
+        # Skip if user is waiting for feedback or admin is replying
+        if state == "waiting_for_feedback" or state.startswith("replying_to_") or state == "waiting_for_wod_time":
+            logger.info(f"Skipping search due to user state: {state}")
+            return
+    
+    # Check if user is admin and in a state for setting word of day time
+    if is_admin(user_id) and user_id in user_states and user_states[user_id] == "waiting_for_wod_time":
+        # Check if the message looks like a time format (HH:MM)
+        if re.match(r"^\d{1,2}:\d{1,2}$", message.text.strip()):
+            logger.info(f"Forwarding time input to word_of_day handler: {message.text}")
+            # Import the handler function directly
+            from plugins.word_of_day import handle_admin_input
+            # Forward the message to the word_of_day handler
+            await handle_admin_input(client, message)
+            return
+    
+    # Continue with search handling
     balochi_word = message.text
-
+    
+    # Log the search attempt for debugging
+    logger.info(f"Searching for word: {balochi_word} from user: {message.chat.id}")
+    
     # Save the search term to the database
     save_search(chat_id=message.chat.id, search_term=balochi_word)
 
+    # Get search results
     results = await search_word(balochi_word)
+    
+    # Log the search results for debugging
+    logger.info(f"Search results for '{balochi_word}': {len(results) if results else 0} results found")
 
-    if results:
-        if len(results) < 1:
-            await message.reply_text("No results found.")
-        elif len(results) == 1:
+    if results and len(results) > 0:  # Make sure results is not None and not empty
+        if len(results) == 1:
             cleaned_translation = results[0].definition
             if len(cleaned_translation) > 4096:
                 chunks = chunck_text(cleaned_translation)
+                # Send first chunk
+                await message.reply_text(chunks[0])
+                # Send remaining chunks
                 for chunk in chunks[1:]:
                     await message.reply_text(chunk)
             else:
@@ -70,13 +107,18 @@ async def search_word_handler(client: Client, message: Message):
 
 active_buttons = {}
 
+# Change this:
 @Client.on_callback_query(filters.regex(r'^result_'), group=2)
+# To:
+@Client.on_callback_query(filters.regex(r'^result_'), group=20)
+
+# Change this:
+@Client.on_inline_query()
+# To:
+@Client.on_inline_query(group=20)
 async def callback_handler(client: Client, query: CallbackQuery):
     message = query.message
     chat_id = message.chat.id
-
-    if not await is_user_joined(None, client, message):
-        return
     
     if query.data.startswith("result_"):
         result_id = int(query.data.split("_")[1])
@@ -182,12 +224,34 @@ async def inline_query_handler(client: Client, inline_query: InlineQuery):
     
 async def search_word(word_to_trans):
     try:
-        results = SayadGanj.select().where(
-            (SayadGanj.full_word == word_to_trans) | (SayadGanj.full_word_with_symbols == word_to_trans)
+        # First try exact match
+        exact_results = SayadGanj.select().where(
+            (SayadGanj.full_word == word_to_trans) | 
+            (SayadGanj.full_word_with_symbols == word_to_trans)
         ).execute()
-        return results
+        
+        exact_results_list = list(exact_results)
+        
+        # If exact match found, return it
+        if exact_results_list and len(exact_results_list) > 0:
+            logger.info(f"Found {len(exact_results_list)} exact results for '{word_to_trans}'")
+            return exact_results_list
+        
+        # If no exact match, try partial match
+        partial_results = SayadGanj.select().where(
+            (SayadGanj.full_word.contains(word_to_trans))
+        ).limit(10).execute()
+                #    (SayadGanj.full_word_with_symbols.contains(word_to_trans)) 
+        partial_results_list = list(partial_results)
+        logger.info(f"Found {len(partial_results_list)} partial results for '{word_to_trans}'")
+        return partial_results_list
+        
     except DoesNotExist:
-        return None
+        logger.info(f"No results found for '{word_to_trans}'")
+        return []
+    except Exception as e:
+        logger.error(f"Error searching for '{word_to_trans}': {str(e)}")
+        return []
 
 async def inline_search_word(word_to_trans):
     try:
