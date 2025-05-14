@@ -20,7 +20,14 @@ from constants.bot_messages import (
     SEE_BOT_USERS_CD,
     DELETE_USER_SEARCHES_BUTTON_TEXT,
     DELETE_USER_SEARCHES_CD,
-    
+    WORD_OF_DAY_SETTINGS,
+    MANUALLY_SEND_WORD_OF_DAY,
+    WORD_OF_DAY_SETTING_CD,
+    SEND_MANUALLY_WOD_CD,
+    CHANNEL_SETTINGS,
+    CHANNEL_SETTINGS_CD,
+    GET_SAYAD_GANJ_PDF,
+    GET_SG_PDF_CD
     )
 
 
@@ -33,13 +40,13 @@ JOIN_TO_CHANNEL_KEYBOARD = InlineKeyboardMarkup(
 # Inline keyboard button
 INLINE_SEARCH_BUTTON = InlineKeyboardMarkup(
     [
-        [InlineKeyboardButton(INLINE_SEARCH_TITLE, switch_inline_query="")]
+        [InlineKeyboardButton(INLINE_SEARCH_TITLE, switch_inline_query="")],
     ]
     )
 
 SAYADGANJ_WEBAPP_BUTTON = InlineKeyboardMarkup(
     [
-        [InlineKeyboardButton(SAYADGANJ_WEBSITE_TITLE, web_app=WebAppInfo(url=SAYADGANJ_WEBSITE_LINK))]
+        [InlineKeyboardButton(SAYADGANJ_WEBSITE_TITLE, web_app=WebAppInfo(url=SAYADGANJ_WEBSITE_LINK))],
     ]
 )
 
@@ -66,10 +73,15 @@ ADMIN_OPTIONS = InlineKeyboardMarkup(
             InlineKeyboardButton(NEW_POST_KEYBOARD_TEXT, callback_data=NEW_POST_CALLBACK_TEXT)
         ],
         [
-            InlineKeyboardButton(SHOW_USERS_WORD_SEARCHES_TEXT, callback_data=SHOW_SEARCHER_CALLBACK_TEXT)
+            InlineKeyboardButton(SHOW_USERS_WORD_SEARCHES_TEXT, callback_data=SHOW_SEARCHER_CALLBACK_TEXT),
+            InlineKeyboardButton(DELETE_USER_SEARCHES_BUTTON_TEXT, callback_data=DELETE_USER_SEARCHES_CD)
         ],
         [
-            InlineKeyboardButton(DELETE_USER_SEARCHES_BUTTON_TEXT, callback_data=DELETE_USER_SEARCHES_CD)
+            InlineKeyboardButton(WORD_OF_DAY_SETTINGS, callback_data=WORD_OF_DAY_SETTING_CD),
+            InlineKeyboardButton(MANUALLY_SEND_WORD_OF_DAY, callback_data=SEND_MANUALLY_WOD_CD)
+        ],
+        [
+            InlineKeyboardButton(CHANNEL_SETTINGS, callback_data=CHANNEL_SETTINGS_CD)
         ],
         [InlineKeyboardButton(EXIT, callback_data=EXIT_BUTTON_DATA)]
     ]
