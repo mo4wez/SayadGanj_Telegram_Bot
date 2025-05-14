@@ -1,0 +1,22 @@
+version: '3.8'
+
+services:
+  bot:
+    build: .
+    container_name: sayadganj_bot
+    restart: unless-stopped
+    volumes:
+      - ./data:/app/data
+      - ./sayadganj.db:/app/sayadganj.db
+      - ./book_info.json:/app/book_info.json
+      - ./.env:/app/.env
+      - ./proxy.ini:/app/proxy.ini
+      - ./word_of_day_settings.json:/app/word_of_day_settings.json
+    environment:
+      - TZ=Asia/Tehran
+    networks:
+      - bot_network
+
+networks:
+  bot_network:
+    driver: bridge
