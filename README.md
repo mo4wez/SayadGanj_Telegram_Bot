@@ -39,13 +39,23 @@ This is a Telegram bot developed using Pyrogram and SQLite to provide a Balochi 
     cd SayadGanj_Telegram_Bot
     ```
 
-3. **Install dependencies using Virtualenv:**
+3. **Create and activate a virtual environment:**
 
     ```
     virtualenv venv
     ```
+    
+    On Windows:
+    ```
+    venv\Scripts\activate
+    ```
+    
+    On macOS/Linux:
+    ```
+    source venv/bin/activate
+    ```
 
-3. **Install dependencies:**
+4. **Install dependencies:**
 
     ```
     pip install -r requirements.txt
@@ -67,6 +77,10 @@ This is a Telegram bot developed using Pyrogram and SQLite to provide a Balochi 
 
    You will need a database named sayadganj.db for searching words.
    
+   If you don't have the database file:
+   - Contact the project maintainers to obtain the dictionary database file
+   - Place the sayadganj.db file in the project's root directory
+
 7. **Run the bot:**
 
     ```
@@ -92,3 +106,27 @@ This is a Telegram bot developed using Pyrogram and SQLite to provide a Balochi 
 ## Contributing
 
 Contributions are welcome! If you want to contribute to this project, feel free to fork the repository and submit a pull request with your changes.
+
+## Project Structure
+
+```
+```
+
+## Troubleshooting
+
+### Common Issues
+
+1. **Bot doesn't respond to commands**
+   - Verify your bot token is correct in the .env file
+   - Ensure the bot is running (`python main.py`)
+   - Check your internet connection
+
+2. **Database errors**
+   - Confirm sayadganj.db exists in the project directory
+   - Verify the database has the expected tables and structure
+
+3. **Dependency issues**
+   - Make sure you've activated the virtual environment
+   - Try reinstalling dependencies: `pip install -r requirements.txt`
+
+For other issues, please open an issue on GitHub.
