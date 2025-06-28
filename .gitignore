@@ -1,3 +1,5 @@
 .env
-*.db
+users.db
+admins.db
 *.session
+*.session-journal

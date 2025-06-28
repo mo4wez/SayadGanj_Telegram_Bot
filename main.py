@@ -31,7 +31,7 @@ bot = Client(
     api_hash=api_hash,
     bot_token=token,
     plugins=plugins,
-    proxy=proxy
+    # proxy=proxy
 )
 
 if __name__ == '__main__':
