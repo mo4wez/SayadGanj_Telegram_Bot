@@ -22,7 +22,7 @@ logger = logging.getLogger(__name__)
 @Client.on_message(filters.command("stats") & filters.user(admin_id))
 async def show_stats(client: Client, message: Message):
     """Show various statistics about the bot usage"""
-    await message.reply("در حال تولید آمار...")
+    await message.reply("Generating Statics...")
     
     # Basic stats
     total_users = User.select().count()
@@ -41,18 +41,18 @@ async def show_stats(client: Client, message: Message):
         most_searched[search.search_term] += 1
     
     top_searches = most_searched.most_common(10)
-    top_searches_text = "\n".join([f"{i+1}. {word} - {count} بار" for i, (word, count) in enumerate(top_searches)])
+    top_searches_text = "\n".join([f"{i+1}. {word} - {count} رند ءَ" for i, (word, count) in enumerate(top_searches)])
     
     # Generate stats text
     stats_text = f"""
-📊 **آمار ربات**
+📊 **SayadGanj Bot Statics**
 
-👥 کاربران کل: {total_users}
-📚 کلمات فرهنگ لغت: {total_words}
-🔍 جستجوهای کل: {total_searches}
-⚡ کاربران فعال (7 روز): {active_users}
+👥 سرمجیں کارمرز کنوک: {total_users}
+📚 لبزبلد ءِ سرجمیں گال: {total_words}
+🔍 سرجمیں شوھاز: {total_searches}
+⚡ پُرکاریں کارمرزوک (7 روچ ءِ تھا): {active_users}
 
-🔝 **کلمات پرجستجو**:
+🔝 **باز شوھاز اتگیں گال**:
 {top_searches_text}
     """
     
@@ -80,9 +80,9 @@ async def generate_search_graph(client, message):
     # Create the plot
     plt.figure(figsize=(10, 6))
     plt.plot(dates, counts)
-    plt.title('جستجوها در طول زمان (30 روز گذشته)')
-    plt.xlabel('تاریخ')
-    plt.ylabel('تعداد جستجوها')
+    plt.title('Searches in the last 30 days')
+    plt.xlabel('Date')
+    plt.ylabel('Number of searches')
     plt.xticks(rotation=45)
     plt.tight_layout()
     
@@ -95,5 +95,5 @@ async def generate_search_graph(client, message):
     await client.send_photo(
         chat_id=message.chat.id,
         photo=buf,
-        caption="فعالیت جستجو در 30 روز گذشته"
+        caption="Searches activity in the last 30 days."
     )
