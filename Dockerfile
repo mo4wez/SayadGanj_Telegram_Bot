@@ -1,32 +1,26 @@
-FROM python:3.9-slim
+# Use an official lightweight Python image
+FROM python:3.10-slim
 
+# Set environment variables to prevent Python from writing pyc files and buffering stdout/stderr
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
+
+# Set the working directory inside the container
 WORKDIR /app
 
-# Install system dependencies
+# Install system dependencies (required for some Python packages or network tools if needed)
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    gcc \
-    python3-dev \
-    libffi-dev \
-    libssl-dev \
-    && apt-get clean \
+    build-essential \
     && rm -rf /var/lib/apt/lists/*
 
-# Install matplotlib dependencies (for admin_stats.py)
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    libfreetype6-dev \
-    pkg-config \
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/*
-
-# Copy requirements first to leverage Docker cache
+# Copy requirements file first to leverage Docker's caching mechanism
 COPY requirements.txt .
+
+# Install Python dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy the rest of the application
+# Copy the rest of your application code to the container
 COPY . .
 
-# Create a directory for the database if it doesn't exist
-RUN mkdir -p /app/data
-
-# Command to run the application
+# Command to run your bot
 CMD ["python", "main.py"]
