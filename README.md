@@ -1,6 +1,6 @@
 # SayadGanj Balochi Dictionary Telegram Bot
 
-This is a Free and open source Telegram bot developed using Pyrogram and SQLite to provide a Balochi dictionary service. Users can access translations and meanings of words in the Balochi language through this bot.
+This is a free and open source Telegram bot developed using Pyrogram and SQLite to provide a Balochi dictionary service. Users can access translations and meanings of words in the Balochi language through this bot.
 
 ## Features
 
